@@ -1,9 +1,10 @@
 import noble from '@abandonware/noble'
-import { broadcast } from '../index.js'
+import { EventEmitter } from 'events'
 
-class BLEScanner {
+class BLEScanner extends EventEmitter {
   constructor() {
     console.log('[BLEScanner] Initializing...');
+    super()
     this.isScanning = false
     this.scanTimeout = null
     this.discoveredDevices = new Map()
@@ -13,6 +14,7 @@ class BLEScanner {
     noble.on('stateChange', (state) => {
       console.log(`[BLEScanner] Noble state changed to ${state}`)
       this.bluetoothState = state
+      this.emit('bleStateChange', this.bluetoothState)
       if (state === 'poweredOn') {
         // Optionally start scanning immediately if it was requested before noble was ready
         // if (this.isScanning) {
@@ -56,11 +58,8 @@ class BLEScanner {
     if (!existingDevice || existingDevice.rssi !== device.rssi || (existingDevice.name === 'Unknown Device' && name !== 'Unknown Device')) {
       this.discoveredDevices.set(device.id, device)
 
-      // Broadcast to all connected WebSocket clients
-      broadcast({
-        type: 'ble-device',
-        device: device
-      })
+      // Emit event for discovered device
+      this.emit('bleDeviceDiscovered', device)
 
       console.log(`[BLEScanner] 📱 BLE Device Updated/Added: ${device.name} (${device.address}) - RSSI: ${device.rssi}`)
     }
@@ -76,8 +75,7 @@ class BLEScanner {
     if (this.bluetoothState !== 'poweredOn') {
       const message = `[BLEScanner] Bluetooth not powered on. Current state: ${this.bluetoothState}`
       console.error(message)
-      broadcast({
-        type: 'ble-scan-status',
+      this.emit('bleScanStatus', {
         status: 'error',
         error: message
       })
@@ -89,9 +87,8 @@ class BLEScanner {
       this.discoveredDevices.clear()
       this.isScanning = true
 
-      // Broadcast scan started status
-      broadcast({
-        type: 'ble-scan-status',
+      // Emit scan started status
+      this.emit('bleScanStatus', {
         status: 'scanning'
       })
 
@@ -111,8 +108,7 @@ class BLEScanner {
       console.error('[BLEScanner] Error starting BLE scan:', error)
       this.isScanning = false
 
-      broadcast({
-        type: 'ble-scan-status',
+      this.emit('bleScanStatus', {
         status: 'error',
         error: error.message
       })
@@ -141,9 +137,8 @@ class BLEScanner {
 
       this.isScanning = false
 
-      // Broadcast scan completed status
-      broadcast({
-        type: 'ble-scan-status',
+      // Emit scan completed status
+      this.emit('bleScanStatus', {
         status: 'idle',
         devicesFound: this.discoveredDevices.size
       })

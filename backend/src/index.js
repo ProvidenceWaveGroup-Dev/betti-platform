@@ -4,6 +4,7 @@ import { WebSocketServer } from 'ws'
 import { createServer } from 'http'
 import dotenv from 'dotenv'
 import bleRoutes from './routes/ble.js'
+import bleScanner from './services/bleScanner.js' // Import bleScanner
 
 dotenv.config()
 
@@ -51,6 +52,41 @@ wss.on('connection', (ws) => {
 // Make wsClients available to routes
 app.locals.wsClients = wsClients
 
+// Broadcast function for WebSocket
+export function broadcast(data) {
+  const message = JSON.stringify(data)
+  wsClients.forEach((client) => {
+    if (client.readyState === 1) { // OPEN
+      client.send(message)
+    }
+  })
+}
+
+// Listen for BLEScanner events and broadcast them
+bleScanner.on('bleStateChange', (state) => {
+  broadcast({
+    type: 'ble-state',
+    state: state
+  })
+})
+
+bleScanner.on('bleDeviceDiscovered', (device) => {
+  broadcast({
+    type: 'ble-device',
+    device: device
+  })
+})
+
+bleScanner.on('bleScanStatus', (status) => {
+  broadcast({
+    type: 'ble-scan-status',
+    status: status.status,
+    error: status.error,
+    devicesFound: status.devicesFound
+  })
+})
+
+
 // Routes
 app.use('/api/ble', bleRoutes)
 
@@ -69,13 +105,3 @@ server.listen(PORT, HOST, () => {
   console.log(`📡 WebSocket server ready`)
   console.log(`🔵 Bluetooth LE scanning available`)
 })
-
-// Broadcast function for WebSocket
-export function broadcast(data) {
-  const message = JSON.stringify(data)
-  wsClients.forEach((client) => {
-    if (client.readyState === 1) { // OPEN
-      client.send(message)
-    }
-  })
-}
