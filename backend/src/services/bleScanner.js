@@ -1,16 +1,43 @@
-import { spawn } from 'child_process'
+import noble from '@abandonware/noble'
 import { broadcast } from '../index.js'
 
 class BLEScanner {
   constructor() {
+    console.log('[BLEScanner] Initializing...');
     this.isScanning = false
     this.scanTimeout = null
     this.discoveredDevices = new Map()
     this.scanDuration = 30000 // 30 seconds
-    this.scanProcess = null
+    this.bluetoothState = 'unknown'
+
+    noble.on('stateChange', (state) => {
+      console.log(`[BLEScanner] Noble state changed to ${state}`)
+      this.bluetoothState = state
+      if (state === 'poweredOn') {
+        // Optionally start scanning immediately if it was requested before noble was ready
+        // if (this.isScanning) {
+        //   this.startScan()
+        // }
+      } else {
+        if (this.isScanning) {
+          console.log('[BLEScanner] Bluetooth is not powered on, stopping scan.');
+          this.stopScan()
+        }
+      }
+    })
+
+    noble.on('discover', (peripheral) => {
+      console.log('[BLEScanner] Discovered peripheral:', peripheral.address);
+      const address = peripheral.address // MAC address
+      const name = peripheral.advertisement.localName || peripheral.address
+      const rssi = peripheral.rssi
+
+      this.handleDeviceDiscovery(address, name, rssi)
+    })
   }
 
   handleDeviceDiscovery(address, name, rssi) {
+    console.log(`[BLEScanner] Handling device discovery: ${name} (${address})`);
     // Normalize MAC address format
     const normalizedAddress = address.toUpperCase()
     const deviceId = normalizedAddress.replace(/:/g, '').toLowerCase()
@@ -21,12 +48,12 @@ class BLEScanner {
       address: normalizedAddress,
       rssi: rssi || 0,
       lastSeen: new Date().toISOString(),
-      manufacturer: null
+      manufacturer: null // Noble might provide this, but for now keep it null
     }
 
     // Check if device is new or needs updating
     const existingDevice = this.discoveredDevices.get(device.id)
-    if (!existingDevice || existingDevice.rssi !== device.rssi || existingDevice.name === 'Unknown Device') {
+    if (!existingDevice || existingDevice.rssi !== device.rssi || (existingDevice.name === 'Unknown Device' && name !== 'Unknown Device')) {
       this.discoveredDevices.set(device.id, device)
 
       // Broadcast to all connected WebSocket clients
@@ -35,58 +62,26 @@ class BLEScanner {
         device: device
       })
 
-      console.log(`📱 BLE Device: ${device.name} (${device.address}) - RSSI: ${device.rssi}`)
-    }
-  }
-
-  parseBluetoothctlOutput(line) {
-    // Parse bluetoothctl scan output
-    // Format examples:
-    // [NEW] Device B4:34:31:E7:21:87 Device Name
-    // [CHG] Device B4:34:31:E7:21:87 RSSI: -50
-    // [CHG] Device B4:34:31:E7:21:87 Name: Device Name
-
-    const newDeviceMatch = line.match(/\[NEW\]\s+Device\s+([0-9A-F:]+)\s*(.*)?/i)
-    if (newDeviceMatch) {
-      const address = newDeviceMatch[1]
-      const name = newDeviceMatch[2]?.trim() || null
-      this.handleDeviceDiscovery(address, name, 0)
-      return
-    }
-
-    const rssiMatch = line.match(/\[CHG\]\s+Device\s+([0-9A-F:]+)\s+RSSI:\s*(-?\d+)/i)
-    if (rssiMatch) {
-      const address = rssiMatch[1]
-      const rssi = parseInt(rssiMatch[2])
-      const deviceId = address.replace(/:/g, '').toLowerCase()
-      const existingDevice = this.discoveredDevices.get(deviceId)
-      if (existingDevice) {
-        this.handleDeviceDiscovery(address, existingDevice.name, rssi)
-      } else {
-        this.handleDeviceDiscovery(address, null, rssi)
-      }
-      return
-    }
-
-    const nameMatch = line.match(/\[CHG\]\s+Device\s+([0-9A-F:]+)\s+Name:\s*(.+)/i)
-    if (nameMatch) {
-      const address = nameMatch[1]
-      const name = nameMatch[2]?.trim()
-      const deviceId = address.replace(/:/g, '').toLowerCase()
-      const existingDevice = this.discoveredDevices.get(deviceId)
-      if (existingDevice) {
-        this.handleDeviceDiscovery(address, name, existingDevice.rssi)
-      } else {
-        this.handleDeviceDiscovery(address, name, 0)
-      }
-      return
+      console.log(`[BLEScanner] 📱 BLE Device Updated/Added: ${device.name} (${device.address}) - RSSI: ${device.rssi}`)
     }
   }
 
   async startScan() {
+    console.log('[BLEScanner] startScan called.');
     if (this.isScanning) {
-      console.log('Scan already in progress')
+      console.log('[BLEScanner] Scan already in progress')
       return { success: false, message: 'Scan already in progress' }
+    }
+
+    if (this.bluetoothState !== 'poweredOn') {
+      const message = `[BLEScanner] Bluetooth not powered on. Current state: ${this.bluetoothState}`
+      console.error(message)
+      broadcast({
+        type: 'ble-scan-status',
+        status: 'error',
+        error: message
+      })
+      return { success: false, message: message }
     }
 
     try {
@@ -100,53 +95,20 @@ class BLEScanner {
         status: 'scanning'
       })
 
-      console.log(`🔍 Starting BLE scan for ${this.scanDuration / 1000} seconds using bluetoothctl...`)
+      console.log(`[BLEScanner] 🔍 Starting BLE scan for ${this.scanDuration / 1000} seconds using Noble...`)
 
-      // Start bluetoothctl in interactive mode
-      this.scanProcess = spawn('bluetoothctl')
-
-      // Handle stdout - parse device discoveries
-      this.scanProcess.stdout.on('data', (data) => {
-        const output = data.toString()
-        // Remove ANSI escape codes
-        const cleanOutput = output.replace(/\x1B\[[0-9;]*[a-zA-Z]/g, '')
-        const lines = cleanOutput.split('\n')
-        lines.forEach((line) => {
-          if (line.trim()) {
-            this.parseBluetoothctlOutput(line)
-          }
-        })
-      })
-
-      // Handle stderr
-      this.scanProcess.stderr.on('data', (data) => {
-        console.error(`bluetoothctl stderr: ${data}`)
-      })
-
-      // Handle process exit
-      this.scanProcess.on('exit', (code) => {
-        console.log(`bluetoothctl process exited with code ${code}`)
-        if (this.isScanning) {
-          this.isScanning = false
-          broadcast({
-            type: 'ble-scan-status',
-            status: 'idle',
-            devicesFound: this.discoveredDevices.size
-          })
-        }
-      })
-
-      // Write "scan on" command to bluetoothctl stdin
-      this.scanProcess.stdin.write('scan on\n')
+      await noble.startScanning([], true) // Scan for all services, allow duplicates
+      console.log('[BLEScanner] noble.startScanning() called successfully.');
 
       // Set timeout to stop scanning after duration
       this.scanTimeout = setTimeout(() => {
+        console.log('[BLEScanner] Scan timeout reached.');
         this.stopScan()
       }, this.scanDuration)
 
       return { success: true, message: 'Scan started' }
     } catch (error) {
-      console.error('Error starting BLE scan:', error)
+      console.error('[BLEScanner] Error starting BLE scan:', error)
       this.isScanning = false
 
       broadcast({
@@ -160,32 +122,22 @@ class BLEScanner {
   }
 
   async stopScan() {
+    console.log('[BLEScanner] stopScan called.');
     if (!this.isScanning) {
+      console.log('[BLEScanner] Not currently scanning.');
       return
     }
 
     try {
-      console.log('🛑 Stopping BLE scan...')
+      console.log('[BLEScanner] 🛑 Stopping BLE scan...')
 
       if (this.scanTimeout) {
         clearTimeout(this.scanTimeout)
         this.scanTimeout = null
       }
 
-      // Stop bluetoothctl scan
-      if (this.scanProcess) {
-        // Send "scan off" and "quit" commands to bluetoothctl stdin
-        this.scanProcess.stdin.write('scan off\n')
-        this.scanProcess.stdin.write('quit\n')
-
-        // Give it a moment to process then kill if still alive
-        setTimeout(() => {
-          if (this.scanProcess) {
-            this.scanProcess.kill('SIGTERM')
-            this.scanProcess = null
-          }
-        }, 500)
-      }
+      await noble.stopScanning()
+      console.log('[BLEScanner] noble.stopScanning() called.');
 
       this.isScanning = false
 
@@ -196,17 +148,18 @@ class BLEScanner {
         devicesFound: this.discoveredDevices.size
       })
 
-      console.log(`✅ Scan complete. Found ${this.discoveredDevices.size} devices`)
+      console.log(`[BLEScanner] ✅ Scan complete. Found ${this.discoveredDevices.size} devices`)
     } catch (error) {
-      console.error('Error stopping BLE scan:', error)
+      console.error('[BLEScanner] Error stopping BLE scan:', error)
       this.isScanning = false
     }
   }
 
   getStatus() {
+    console.log('[BLEScanner] getStatus called.');
     return {
       isScanning: this.isScanning,
-      bluetoothState: 'poweredOn', // Assume powered on if we can run bluetoothctl
+      bluetoothState: this.bluetoothState,
       devicesFound: this.discoveredDevices.size,
       devices: Array.from(this.discoveredDevices.values())
     }
