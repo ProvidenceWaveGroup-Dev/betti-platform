@@ -1,0 +1,142 @@
+.vitals-widget {
+  background: rgba(20, 20, 30, 0.6);
+  border-radius: 16px;
+  padding: 30px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 255, 136, 0.2);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.vitals-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--accent-green);
+  background: rgba(0, 255, 136, 0.1);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 300;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--accent-green);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.vitals-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  flex: 1;
+}
+
+.vital-card {
+  background: rgba(10, 10, 20, 0.5);
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  gap: 16px;
+  border-left: 4px solid var(--accent-green);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.vital-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(0, 255, 136, 0.05) 0%, rgba(74, 158, 255, 0.05) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.vital-card:hover::before {
+  opacity: 1;
+}
+
+.vital-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 255, 136, 0.15);
+}
+
+.vital-card.status-normal {
+  border-left-color: #00ff88;
+}
+
+.vital-card.status-warning {
+  border-left-color: #ffd93d;
+}
+
+.vital-card.status-critical {
+  border-left-color: #ff6b6b;
+}
+
+.vital-icon {
+  font-size: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+}
+
+.vital-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.vital-label {
+  font-size: 14px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 500;
+}
+
+.vital-value {
+  font-size: 36px;
+  font-weight: 300;
+  color: var(--text-light);
+  line-height: 1;
+  margin: 4px 0;
+}
+
+.vital-unit {
+  font-size: 18px;
+  color: var(--text-muted);
+  margin-left: 6px;
+}
+
+.vital-status {
+  font-size: 13px;
+  color: var(--accent-green);
+  text-transform: capitalize;
+  font-weight: 500;
+}
+
+.vital-card.status-warning .vital-status {
+  color: #ffd93d;
+}
+
+.vital-card.status-critical .vital-status {
+  color: #ff6b6b;
+}
+
+.vital-time {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 4px;
+}

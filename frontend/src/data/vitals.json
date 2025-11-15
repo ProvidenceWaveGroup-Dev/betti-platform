@@ -1,0 +1,33 @@
+{
+  "bloodPressure": {
+    "systolic": 120,
+    "diastolic": 80,
+    "unit": "mmHg",
+    "status": "normal",
+    "lastUpdated": "2025-10-22T08:30:00Z"
+  },
+  "heartRate": {
+    "value": 72,
+    "unit": "bpm",
+    "status": "normal",
+    "lastUpdated": "2025-10-22T08:30:00Z"
+  },
+  "oxygenSaturation": {
+    "value": 98,
+    "unit": "%",
+    "status": "normal",
+    "lastUpdated": "2025-10-22T08:30:00Z"
+  },
+  "temperature": {
+    "value": 98.6,
+    "unit": "°F",
+    "status": "normal",
+    "lastUpdated": "2025-10-22T08:30:00Z"
+  },
+  "weight": {
+    "value": 165,
+    "unit": "lbs",
+    "status": "stable",
+    "lastUpdated": "2025-10-22T07:00:00Z"
+  }
+}

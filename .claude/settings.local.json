@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(tree:*)",
+      "Bash(npm run dev:frontend:*)",
+      "WebFetch(domain:localhost)",
+      "Bash(curl:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run dev:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(npm run dev:backend:*)",
+      "Bash(lsof:*)",
+      "Bash(timeout 3 bluetoothctl:*)",
+      "Bash(python3:*)",
+      "Bash(hciconfig:*)",
+      "Bash(timeout 15 sudo hcitool:*)",
+      "Bash(sudo hcitool cmd 0x08 0x0003)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

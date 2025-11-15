@@ -1,0 +1,262 @@
+.ble-devices-widget {
+  background: rgba(20, 20, 30, 0.6);
+  border-radius: 16px;
+  padding: 30px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(74, 158, 255, 0.2);
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+}
+
+.ble-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(74, 158, 255, 0.2);
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.ble-title-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.connection-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #ff6b6b;
+}
+
+.status-dot.connected {
+  background-color: var(--accent-green);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.status-label {
+  font-size: 13px;
+  font-weight: 300;
+}
+
+.ble-controls {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.scan-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #4a9eff 0%, #00d4ff 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(74, 158, 255, 0.3);
+}
+
+.scan-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(74, 158, 255, 0.4);
+}
+
+.scan-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.scan-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.scan-button.scanning {
+  background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+}
+
+.scan-icon {
+  font-size: 18px;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.device-count {
+  font-size: 14px;
+  color: var(--text-muted);
+  background: rgba(74, 158, 255, 0.1);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 300;
+}
+
+.ble-devices-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.ble-devices-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.ble-devices-list::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+
+.ble-devices-list::-webkit-scrollbar-thumb {
+  background: rgba(74, 158, 255, 0.3);
+  border-radius: 3px;
+}
+
+.ble-devices-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(74, 158, 255, 0.5);
+}
+
+.no-devices {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.no-devices-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.no-devices-text {
+  font-size: 16px;
+  color: var(--text-muted);
+  font-weight: 300;
+}
+
+.ble-device-item {
+  display: flex;
+  gap: 16px;
+  padding: 16px 20px;
+  background: rgba(10, 10, 20, 0.5);
+  border-radius: 10px;
+  border-left: 3px solid var(--accent-blue);
+  transition: all 0.3s ease;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.ble-device-item:hover {
+  background: rgba(20, 20, 30, 0.7);
+  transform: translateX(4px);
+}
+
+.ble-device-item.signal-excellent {
+  border-left-color: #00ff88;
+}
+
+.ble-device-item.signal-good {
+  border-left-color: #4a9eff;
+}
+
+.ble-device-item.signal-fair {
+  border-left-color: #ffd93d;
+}
+
+.ble-device-item.signal-weak {
+  border-left-color: #ff6b6b;
+}
+
+.device-icon {
+  font-size: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  flex-shrink: 0;
+}
+
+.device-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.device-name {
+  font-size: 18px;
+  color: var(--text-light);
+  font-weight: 400;
+}
+
+.device-details {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-muted);
+  flex-wrap: wrap;
+}
+
+.device-address {
+  font-family: 'Courier New', monospace;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.device-rssi {
+  font-weight: 500;
+}
+
+.device-divider {
+  opacity: 0.5;
+}
+
+.device-time {
+  font-size: 11px;
+  opacity: 0.7;
+}

@@ -1,0 +1,33 @@
+{
+  "name": "betti-platform",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Betti Smart Mirror Hub - A full-stack platform for smart mirror functionality",
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "install:all": "npm install && npm install --workspace=frontend && npm install --workspace=backend",
+    "dev:frontend": "npm run dev --workspace=frontend",
+    "dev:backend": "npm run dev --workspace=backend",
+    "dev": "npm run dev:backend & npm run dev:frontend",
+    "build:frontend": "npm run build --workspace=frontend",
+    "build:backend": "npm run build --workspace=backend",
+    "build": "npm run build:backend && npm run build:frontend",
+    "start:frontend": "npm run start --workspace=frontend",
+    "start:backend": "npm run start --workspace=backend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yourusername/betti-platform.git"
+  },
+  "keywords": [
+    "smart-mirror",
+    "iot",
+    "raspberry-pi",
+    "touchscreen"
+  ],
+  "author": "",
+  "license": "MIT"
+}

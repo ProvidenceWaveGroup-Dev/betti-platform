@@ -1,0 +1,129 @@
+.appointments-widget {
+  background: rgba(20, 20, 30, 0.6);
+  border-radius: 16px;
+  padding: 30px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(74, 158, 255, 0.2);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.widget-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(74, 158, 255, 0.2);
+}
+
+.widget-title {
+  font-size: 32px;
+  font-weight: 300;
+  background: linear-gradient(135deg, #4a9eff 0%, #00d4ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+}
+
+.appointment-count {
+  font-size: 16px;
+  color: var(--text-muted);
+  background: rgba(74, 158, 255, 0.1);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 300;
+}
+
+.appointments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.appointment-item {
+  display: flex;
+  gap: 16px;
+  padding: 20px;
+  background: rgba(10, 10, 20, 0.5);
+  border-radius: 12px;
+  border-left: 4px solid var(--accent-blue);
+  transition: all 0.3s ease;
+}
+
+.appointment-item:hover {
+  transform: translateX(4px);
+  background: rgba(20, 20, 30, 0.7);
+}
+
+.appointment-item.type-medical {
+  border-left-color: #4a9eff;
+}
+
+.appointment-item.type-medication {
+  border-left-color: #ff6b9d;
+}
+
+.appointment-item.type-therapy {
+  border-left-color: #00ff88;
+}
+
+.appointment-item.type-personal {
+  border-left-color: #ffd93d;
+}
+
+.appointment-icon {
+  font-size: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+}
+
+.appointment-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.appointment-time {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--accent-blue);
+}
+
+.appointment-title {
+  font-size: 20px;
+  color: var(--text-light);
+  font-weight: 400;
+  margin-bottom: 4px;
+}
+
+.appointment-location {
+  font-size: 14px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.appointment-location::before {
+  content: '📍';
+  font-size: 12px;
+}
+
+.appointment-notes {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-top: 4px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}

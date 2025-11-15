@@ -1,0 +1,79 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px 50px;
+  background: rgba(10, 10, 10, 0.8);
+  border-bottom: 2px solid rgba(74, 158, 255, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.header-left {
+  flex: 1;
+}
+
+.betti-logo {
+  height: 80px;
+  width: auto;
+  object-fit: contain;
+}
+
+.header-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.weather-widget {
+  text-align: center;
+}
+
+.weather-location {
+  font-size: 18px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  font-weight: 300;
+}
+
+.weather-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.weather-icon {
+  font-size: 36px;
+}
+
+.weather-temp {
+  font-size: 42px;
+  font-weight: 300;
+  color: var(--text-light);
+}
+
+.weather-condition {
+  font-size: 16px;
+  color: var(--text-muted);
+  font-weight: 300;
+}
+
+.header-right {
+  flex: 1;
+  text-align: right;
+}
+
+.time-display {
+  font-size: 48px;
+  font-weight: 300;
+  color: var(--text-light);
+  margin-bottom: 4px;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+.date-display {
+  font-size: 18px;
+  color: var(--text-muted);
+  font-weight: 300;
+}

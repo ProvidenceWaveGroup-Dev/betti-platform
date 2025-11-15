@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "title": "Doctor Appointment - Dr. Smith",
+    "time": "10:00 AM",
+    "type": "medical",
+    "location": "Harmony Medical Center",
+    "notes": "Annual checkup"
+  },
+  {
+    "id": 2,
+    "title": "Medication Reminder",
+    "time": "12:00 PM",
+    "type": "medication",
+    "location": "Home",
+    "notes": "Take blood pressure medication with lunch"
+  },
+  {
+    "id": 3,
+    "title": "Physical Therapy Session",
+    "time": "2:30 PM",
+    "type": "therapy",
+    "location": "Recovery Plus Clinic",
+    "notes": "Bring exercise bands"
+  },
+  {
+    "id": 4,
+    "title": "Video Call with Family",
+    "time": "5:00 PM",
+    "type": "personal",
+    "location": "Home",
+    "notes": "Weekly check-in with Sarah and kids"
+  },
+  {
+    "id": 5,
+    "title": "Evening Medication",
+    "time": "8:00 PM",
+    "type": "medication",
+    "location": "Home",
+    "notes": "Take evening supplements"
+  }
+]
