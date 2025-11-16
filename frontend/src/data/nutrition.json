@@ -1,0 +1,176 @@
+{
+  "dailySummary": {
+    "date": "2025-11-16",
+    "calories": {
+      "consumed": 1847,
+      "target": 2200,
+      "remaining": 353,
+      "percentage": 84
+    },
+    "protein": {
+      "consumed": 87,
+      "target": 110,
+      "remaining": 23,
+      "percentage": 79
+    },
+    "carbs": {
+      "consumed": 203,
+      "target": 275,
+      "remaining": 72,
+      "percentage": 74
+    },
+    "fat": {
+      "consumed": 68,
+      "target": 73,
+      "remaining": 5,
+      "percentage": 93
+    },
+    "fiber": {
+      "consumed": 18,
+      "target": 25,
+      "remaining": 7,
+      "percentage": 72
+    },
+    "sodium": {
+      "consumed": 1580,
+      "target": 2300,
+      "remaining": 720,
+      "percentage": 69
+    }
+  },
+  "todaysMeals": [
+    {
+      "id": 1,
+      "mealType": "breakfast",
+      "time": "08:15",
+      "foods": [
+        {
+          "name": "Oatmeal with Berries",
+          "quantity": 1,
+          "unit": "serving",
+          "calories": 320,
+          "protein": 8,
+          "carbs": 58,
+          "fat": 6
+        },
+        {
+          "name": "Greek Yogurt",
+          "quantity": 150,
+          "unit": "g",
+          "calories": 130,
+          "protein": 15,
+          "carbs": 9,
+          "fat": 4
+        }
+      ],
+      "totalCalories": 450,
+      "totalProtein": 23,
+      "totalCarbs": 67,
+      "totalFat": 10
+    },
+    {
+      "id": 2,
+      "mealType": "lunch",
+      "time": "12:30",
+      "foods": [
+        {
+          "name": "Grilled Chicken Salad",
+          "quantity": 1,
+          "unit": "serving",
+          "calories": 387,
+          "protein": 35,
+          "carbs": 12,
+          "fat": 22
+        },
+        {
+          "name": "Whole Wheat Roll",
+          "quantity": 1,
+          "unit": "piece",
+          "calories": 120,
+          "protein": 4,
+          "carbs": 22,
+          "fat": 2
+        }
+      ],
+      "totalCalories": 507,
+      "totalProtein": 39,
+      "totalCarbs": 34,
+      "totalFat": 24
+    },
+    {
+      "id": 3,
+      "mealType": "snack",
+      "time": "15:45",
+      "foods": [
+        {
+          "name": "Apple with Almond Butter",
+          "quantity": 1,
+          "unit": "serving",
+          "calories": 190,
+          "protein": 4,
+          "carbs": 25,
+          "fat": 8
+        }
+      ],
+      "totalCalories": 190,
+      "totalProtein": 4,
+      "totalCarbs": 25,
+      "totalFat": 8
+    },
+    {
+      "id": 4,
+      "mealType": "dinner",
+      "time": "19:00",
+      "foods": [
+        {
+          "name": "Salmon Fillet",
+          "quantity": 150,
+          "unit": "g",
+          "calories": 280,
+          "protein": 42,
+          "carbs": 0,
+          "fat": 12
+        },
+        {
+          "name": "Roasted Vegetables",
+          "quantity": 1,
+          "unit": "serving",
+          "calories": 120,
+          "protein": 3,
+          "carbs": 15,
+          "fat": 6
+        },
+        {
+          "name": "Quinoa",
+          "quantity": 0.5,
+          "unit": "cup",
+          "calories": 110,
+          "protein": 4,
+          "carbs": 20,
+          "fat": 2
+        }
+      ],
+      "totalCalories": 510,
+      "totalProtein": 49,
+      "totalCarbs": 35,
+      "totalFat": 20
+    }
+  ],
+  "recentFoods": [
+    "Grilled Chicken Breast",
+    "Greek Yogurt",
+    "Oatmeal",
+    "Apple",
+    "Salmon Fillet",
+    "Quinoa",
+    "Mixed Berries"
+  ],
+  "nutritionGoals": {
+    "calories": 2200,
+    "protein": 110,
+    "carbs": 275,
+    "fat": 73,
+    "fiber": 25,
+    "sodium": 2300
+  }
+}

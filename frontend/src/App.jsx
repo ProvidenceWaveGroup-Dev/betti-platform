@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Header from './components/Header'
 import Appointments from './components/Appointments'
 import Vitals from './components/Vitals'
+import Nutrition from './components/Nutrition'
 import BLEDevices from './components/BLEDevices'
 import VideoChat from './components/VideoChat'
 import './App.css'
@@ -10,6 +11,7 @@ function App() {
   const [activeView, setActiveView] = useState('home')
   const [panelState, setPanelState] = useState({
     health: 'expanded',
+    nutrition: 'collapsed',
     appointments: 'expanded',
     sensors: 'collapsed',
     video: 'hidden'
@@ -23,6 +25,11 @@ function App() {
       setPanelState(prev => ({
         ...prev,
         health: prev.health === 'expanded' ? 'collapsed' : 'expanded'
+      }))
+    } else if (view === 'nutrition') {
+      setPanelState(prev => ({
+        ...prev,
+        nutrition: prev.nutrition === 'expanded' ? 'collapsed' : 'expanded'
       }))
     } else if (view === 'appointments') {
       setPanelState(prev => ({
@@ -40,6 +47,7 @@ function App() {
         video: prev.video === 'expanded' ? 'hidden' : 'expanded',
         // When video becomes active, force health and appointments to collapsed
         health: prev.video === 'hidden' ? 'collapsed' : prev.health,
+        nutrition: prev.video === 'hidden' ? 'collapsed' : prev.nutrition,
         appointments: prev.video === 'hidden' ? 'collapsed' : prev.appointments
       }))
     }
@@ -64,6 +72,9 @@ function App() {
                 <Vitals isCollapsed={true} />
               </div>
               <div className="sidebar-item">
+                <Nutrition isCollapsed={true} />
+              </div>
+              <div className="sidebar-item">
                 <Appointments isCollapsed={true} />
               </div>
             </div>
@@ -74,6 +85,9 @@ function App() {
             <div className="content-grid">
               <div className="grid-left">
                 <Appointments isCollapsed={panelState.appointments === 'collapsed'} />
+                {panelState.nutrition !== 'collapsed' && (
+                  <Nutrition isCollapsed={panelState.nutrition === 'collapsed'} />
+                )}
               </div>
               <div className="grid-right">
                 <Vitals isCollapsed={panelState.health === 'collapsed'} />

@@ -1,0 +1,322 @@
+[
+  {
+    "id": 1,
+    "name": "Chicken Breast",
+    "brand": "Generic",
+    "category": "Protein",
+    "nutrition": {
+      "calories": 165,
+      "protein": 31,
+      "carbs": 0,
+      "fat": 3.6,
+      "fiber": 0,
+      "sodium": 74
+    },
+    "servingSize": "100g",
+    "searchTerms": ["chicken", "breast", "poultry"]
+  },
+  {
+    "id": 2,
+    "name": "Salmon Fillet",
+    "brand": "Generic",
+    "category": "Protein",
+    "nutrition": {
+      "calories": 208,
+      "protein": 25.4,
+      "carbs": 0,
+      "fat": 12.4,
+      "fiber": 0,
+      "sodium": 59
+    },
+    "servingSize": "100g",
+    "searchTerms": ["salmon", "fish", "fillet"]
+  },
+  {
+    "id": 3,
+    "name": "Greek Yogurt",
+    "brand": "Generic",
+    "category": "Dairy",
+    "nutrition": {
+      "calories": 97,
+      "protein": 9,
+      "carbs": 6,
+      "fat": 5,
+      "fiber": 0,
+      "sodium": 50
+    },
+    "servingSize": "100g",
+    "searchTerms": ["yogurt", "greek", "dairy"]
+  },
+  {
+    "id": 4,
+    "name": "Oatmeal",
+    "brand": "Generic",
+    "category": "Grains",
+    "nutrition": {
+      "calories": 68,
+      "protein": 2.4,
+      "carbs": 12,
+      "fat": 1.4,
+      "fiber": 1.7,
+      "sodium": 4
+    },
+    "servingSize": "100g",
+    "searchTerms": ["oats", "oatmeal", "cereal", "breakfast"]
+  },
+  {
+    "id": 5,
+    "name": "Apple",
+    "brand": "Generic",
+    "category": "Fruits",
+    "nutrition": {
+      "calories": 52,
+      "protein": 0.3,
+      "carbs": 14,
+      "fat": 0.2,
+      "fiber": 2.4,
+      "sodium": 1
+    },
+    "servingSize": "100g",
+    "searchTerms": ["apple", "fruit"]
+  },
+  {
+    "id": 6,
+    "name": "Banana",
+    "brand": "Generic",
+    "category": "Fruits",
+    "nutrition": {
+      "calories": 89,
+      "protein": 1.1,
+      "carbs": 23,
+      "fat": 0.3,
+      "fiber": 2.6,
+      "sodium": 1
+    },
+    "servingSize": "100g",
+    "searchTerms": ["banana", "fruit"]
+  },
+  {
+    "id": 7,
+    "name": "Broccoli",
+    "brand": "Generic",
+    "category": "Vegetables",
+    "nutrition": {
+      "calories": 34,
+      "protein": 2.8,
+      "carbs": 7,
+      "fat": 0.4,
+      "fiber": 2.6,
+      "sodium": 33
+    },
+    "servingSize": "100g",
+    "searchTerms": ["broccoli", "vegetable", "green"]
+  },
+  {
+    "id": 8,
+    "name": "Brown Rice",
+    "brand": "Generic",
+    "category": "Grains",
+    "nutrition": {
+      "calories": 112,
+      "protein": 2.6,
+      "carbs": 23,
+      "fat": 0.9,
+      "fiber": 1.8,
+      "sodium": 5
+    },
+    "servingSize": "100g",
+    "searchTerms": ["rice", "brown", "grain"]
+  },
+  {
+    "id": 9,
+    "name": "Quinoa",
+    "brand": "Generic",
+    "category": "Grains",
+    "nutrition": {
+      "calories": 120,
+      "protein": 4.4,
+      "carbs": 22,
+      "fat": 1.9,
+      "fiber": 2.8,
+      "sodium": 5
+    },
+    "servingSize": "100g",
+    "searchTerms": ["quinoa", "grain", "superfood"]
+  },
+  {
+    "id": 10,
+    "name": "Eggs",
+    "brand": "Generic",
+    "category": "Protein",
+    "nutrition": {
+      "calories": 155,
+      "protein": 13,
+      "carbs": 1.1,
+      "fat": 11,
+      "fiber": 0,
+      "sodium": 124
+    },
+    "servingSize": "100g",
+    "searchTerms": ["eggs", "egg", "protein"]
+  },
+  {
+    "id": 11,
+    "name": "Almonds",
+    "brand": "Generic",
+    "category": "Nuts",
+    "nutrition": {
+      "calories": 579,
+      "protein": 21,
+      "carbs": 22,
+      "fat": 50,
+      "fiber": 12,
+      "sodium": 1
+    },
+    "servingSize": "100g",
+    "searchTerms": ["almonds", "nuts", "snack"]
+  },
+  {
+    "id": 12,
+    "name": "Sweet Potato",
+    "brand": "Generic",
+    "category": "Vegetables",
+    "nutrition": {
+      "calories": 86,
+      "protein": 1.6,
+      "carbs": 20,
+      "fat": 0.1,
+      "fiber": 3,
+      "sodium": 4
+    },
+    "servingSize": "100g",
+    "searchTerms": ["sweet potato", "potato", "vegetable"]
+  },
+  {
+    "id": 13,
+    "name": "Spinach",
+    "brand": "Generic",
+    "category": "Vegetables",
+    "nutrition": {
+      "calories": 23,
+      "protein": 2.9,
+      "carbs": 3.6,
+      "fat": 0.4,
+      "fiber": 2.2,
+      "sodium": 79
+    },
+    "servingSize": "100g",
+    "searchTerms": ["spinach", "leafy", "green", "vegetable"]
+  },
+  {
+    "id": 14,
+    "name": "Avocado",
+    "brand": "Generic",
+    "category": "Fruits",
+    "nutrition": {
+      "calories": 160,
+      "protein": 2,
+      "carbs": 9,
+      "fat": 15,
+      "fiber": 7,
+      "sodium": 7
+    },
+    "servingSize": "100g",
+    "searchTerms": ["avocado", "fruit", "healthy fat"]
+  },
+  {
+    "id": 15,
+    "name": "Whole Wheat Bread",
+    "brand": "Generic",
+    "category": "Grains",
+    "nutrition": {
+      "calories": 247,
+      "protein": 13,
+      "carbs": 41,
+      "fat": 4.2,
+      "fiber": 6,
+      "sodium": 400
+    },
+    "servingSize": "100g",
+    "searchTerms": ["bread", "wheat", "whole grain"]
+  },
+  {
+    "id": 16,
+    "name": "Ground Turkey",
+    "brand": "Generic",
+    "category": "Protein",
+    "nutrition": {
+      "calories": 149,
+      "protein": 20,
+      "carbs": 0,
+      "fat": 7,
+      "fiber": 0,
+      "sodium": 98
+    },
+    "servingSize": "100g",
+    "searchTerms": ["turkey", "ground", "lean", "protein"]
+  },
+  {
+    "id": 17,
+    "name": "Milk (2%)",
+    "brand": "Generic",
+    "category": "Dairy",
+    "nutrition": {
+      "calories": 50,
+      "protein": 3.3,
+      "carbs": 4.8,
+      "fat": 2,
+      "fiber": 0,
+      "sodium": 44
+    },
+    "servingSize": "100ml",
+    "searchTerms": ["milk", "dairy", "2%"]
+  },
+  {
+    "id": 18,
+    "name": "Cheese (Cheddar)",
+    "brand": "Generic",
+    "category": "Dairy",
+    "nutrition": {
+      "calories": 403,
+      "protein": 25,
+      "carbs": 1.3,
+      "fat": 33,
+      "fiber": 0,
+      "sodium": 621
+    },
+    "servingSize": "100g",
+    "searchTerms": ["cheese", "cheddar", "dairy"]
+  },
+  {
+    "id": 19,
+    "name": "Black Beans",
+    "brand": "Generic",
+    "category": "Legumes",
+    "nutrition": {
+      "calories": 132,
+      "protein": 8.9,
+      "carbs": 24,
+      "fat": 0.5,
+      "fiber": 8.7,
+      "sodium": 5
+    },
+    "servingSize": "100g",
+    "searchTerms": ["beans", "black beans", "legumes", "protein"]
+  },
+  {
+    "id": 20,
+    "name": "Olive Oil",
+    "brand": "Generic",
+    "category": "Fats",
+    "nutrition": {
+      "calories": 884,
+      "protein": 0,
+      "carbs": 0,
+      "fat": 100,
+      "fiber": 0,
+      "sodium": 2
+    },
+    "servingSize": "100ml",
+    "searchTerms": ["oil", "olive", "fat", "cooking"]
+  }
+]

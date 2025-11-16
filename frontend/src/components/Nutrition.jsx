@@ -1,0 +1,179 @@
+import React, { useState, useEffect } from 'react'
+import './Nutrition.css'
+
+function Nutrition({ isCollapsed = false }) {
+  const [nutritionData, setNutritionData] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    fetch('/src/data/nutrition.json')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch nutrition data')
+        }
+        return response.json()
+      })
+      .then(data => {
+        setNutritionData(data)
+        setLoading(false)
+      })
+      .catch(error => {
+        console.error('Error loading nutrition data:', error)
+        setError(error.message)
+        // Set fallback data
+        setNutritionData({
+          dailySummary: {
+            calories: { consumed: 1800, target: 2200, percentage: 82 },
+            protein: { consumed: 85, target: 110, percentage: 77 },
+            carbs: { consumed: 200, target: 275, percentage: 73 },
+            fat: { consumed: 65, target: 73, percentage: 89 }
+          }
+        })
+        setLoading(false)
+      })
+  }, [])
+
+  if (loading) {
+    return (
+      <div className={`nutrition-card ${isCollapsed ? 'nutrition-mini' : ''}`}>
+        <div className="card-header">
+          <h2 className="card-title">Nutrition</h2>
+          <span className="status-indicator status-loading">Loading...</span>
+        </div>
+      </div>
+    )
+  }
+
+  if (isCollapsed) {
+    return (
+      <div className="nutrition-mini">
+        <div className="mini-header">
+          <span className="mini-icon">🍎</span>
+          <span className="mini-title">Nutrition</span>
+          <span className="mini-status status-normal">
+            ● {nutritionData?.dailySummary?.calories?.consumed || 0} / {nutritionData?.dailySummary?.calories?.target || 2200} kcal
+          </span>
+        </div>
+        <div className="mini-nutrition-grid">
+          {nutritionData?.dailySummary && Object.entries(nutritionData.dailySummary).slice(0, 4).map(([key, macro]) => (
+            <div key={key} className="mini-nutrition-item">
+              <span className="mini-nutrition-icon">
+                {key === 'calories' ? '🔥' :
+                 key === 'protein' ? '💪' :
+                 key === 'carbs' ? '🌾' :
+                 key === 'fat' ? '🥑' : '📊'}
+              </span>
+              <div className="mini-nutrition-info">
+                <span className="mini-nutrition-value">{macro.consumed}</span>
+                <span className="mini-nutrition-label">{key}</span>
+              </div>
+              <div className="mini-progress-bar">
+                <div
+                  className="mini-progress-fill"
+                  style={{width: `${Math.min(macro.percentage || 0, 100)}%`}}
+                ></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  const getStatusClass = (percentage) => {
+    if (percentage >= 90) return 'status-high'
+    if (percentage >= 70) return 'status-normal'
+    return 'status-low'
+  }
+
+  const getMacroIcon = (macroType) => {
+    const icons = {
+      calories: '🔥',
+      protein: '💪',
+      carbs: '🌾',
+      fat: '🥑',
+      fiber: '🌿',
+      sodium: '🧂'
+    }
+    return icons[macroType] || '📊'
+  }
+
+  return (
+    <div className="nutrition-card">
+      <div className="card-header">
+        <h2 className="card-title">Daily Nutrition</h2>
+        <span className="status-indicator status-normal">
+          <span className="status-dot"></span>
+          {nutritionData?.dailySummary?.calories?.consumed || 0} / {nutritionData?.dailySummary?.calories?.target || 2200} kcal
+        </span>
+      </div>
+
+      <div className="nutrition-grid">
+        {nutritionData?.dailySummary && Object.entries(nutritionData.dailySummary).map(([macroType, macro]) => (
+          <div key={macroType} className="nutrition-item">
+            <div className="nutrition-icon-wrapper">
+              <span className="nutrition-icon">{getMacroIcon(macroType)}</span>
+            </div>
+            <div className="nutrition-content">
+              <div className="nutrition-label">
+                {macroType.charAt(0).toUpperCase() + macroType.slice(1)}
+              </div>
+              <div className="nutrition-values">
+                <span className="nutrition-consumed">{macro.consumed}</span>
+                <span className="nutrition-separator">/</span>
+                <span className="nutrition-target">{macro.target}</span>
+                <span className="nutrition-unit">
+                  {macroType === 'calories' ? 'kcal' :
+                   macroType === 'sodium' ? 'mg' : 'g'}
+                </span>
+              </div>
+              <div className="nutrition-progress">
+                <div className="progress-bar">
+                  <div
+                    className={`progress-fill ${getStatusClass(macro.percentage || 0)}`}
+                    style={{width: `${Math.min(macro.percentage || 0, 100)}%`}}
+                  ></div>
+                </div>
+                <span className="progress-percentage">{macro.percentage || 0}%</span>
+              </div>
+              {macro.remaining && (
+                <div className="nutrition-remaining">
+                  {macro.remaining > 0 ? `${macro.remaining} remaining` : 'Goal reached!'}
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {nutritionData?.todaysMeals && nutritionData.todaysMeals.length > 0 && (
+        <div className="recent-meals">
+          <h3 className="recent-meals-title">Today's Meals</h3>
+          <div className="meals-list">
+            {nutritionData.todaysMeals.slice(-3).map(meal => (
+              <div key={meal.id} className="meal-item">
+                <div className="meal-time">{meal.time}</div>
+                <div className="meal-type">{meal.mealType}</div>
+                <div className="meal-calories">{meal.totalCalories} kcal</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div className="nutrition-actions">
+        <button className="action-button primary">
+          <span className="button-icon">➕</span>
+          Log Meal
+        </button>
+        <button className="action-button secondary">
+          <span className="button-icon">📊</span>
+          View Details
+        </button>
+      </div>
+    </div>
+  )
+}
+
+export default Nutrition

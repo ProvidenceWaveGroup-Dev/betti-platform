@@ -25,6 +25,17 @@
 
 .grid-left,
 .grid-right {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  height: 100%;
+}
+
+/* When nutrition is visible, split the left grid 50/50 */
+.grid-left > * {
+  flex: 1;
+  min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
 }
