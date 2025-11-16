@@ -1,33 +1,42 @@
-{
-  "bloodPressure": {
-    "systolic": 120,
-    "diastolic": 80,
+[
+  {
+    "icon": "❤️",
+    "label": "Blood Pressure",
+    "value": "120/80",
     "unit": "mmHg",
-    "status": "normal",
-    "lastUpdated": "2025-10-22T08:30:00Z"
+    "status": "Normal",
+    "updated": "2 min ago"
   },
-  "heartRate": {
-    "value": 72,
+  {
+    "icon": "💓",
+    "label": "Heart Rate",
+    "value": "72",
     "unit": "bpm",
-    "status": "normal",
-    "lastUpdated": "2025-10-22T08:30:00Z"
+    "status": "Normal",
+    "updated": "2 min ago"
   },
-  "oxygenSaturation": {
-    "value": 98,
+  {
+    "icon": "🫁",
+    "label": "Oxygen Sat",
+    "value": "98",
     "unit": "%",
-    "status": "normal",
-    "lastUpdated": "2025-10-22T08:30:00Z"
+    "status": "Normal",
+    "updated": "3 min ago"
   },
-  "temperature": {
-    "value": 98.6,
+  {
+    "icon": "🌡️",
+    "label": "Temperature",
+    "value": "98.6",
     "unit": "°F",
-    "status": "normal",
-    "lastUpdated": "2025-10-22T08:30:00Z"
+    "status": "Normal",
+    "updated": "5 min ago"
   },
-  "weight": {
-    "value": 165,
+  {
+    "icon": "⚖️",
+    "label": "Weight",
+    "value": "165",
     "unit": "lbs",
-    "status": "stable",
-    "lastUpdated": "2025-10-22T07:00:00Z"
+    "status": "Stable",
+    "updated": "1 hour ago"
   }
-}
+]

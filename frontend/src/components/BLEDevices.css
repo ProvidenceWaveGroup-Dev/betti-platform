@@ -260,3 +260,62 @@
   font-size: 11px;
   opacity: 0.7;
 }
+
+/* Mini/Collapsed View */
+.ble-mini {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(74, 158, 255, 0.2);
+  border-radius: 12px;
+  padding: 16px 24px;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+}
+
+.ble-mini:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(74, 158, 255, 0.4);
+}
+
+.ble-mini .mini-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ble-mini .mini-icon {
+  font-size: 24px;
+}
+
+.ble-mini .mini-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-light);
+}
+
+.mini-connection {
+  font-size: 13px;
+  padding: 4px 12px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mini-connection.connected {
+  color: var(--status-normal);
+  background: rgba(76, 175, 80, 0.15);
+}
+
+.mini-connection.disconnected {
+  color: var(--status-warning);
+  background: rgba(255, 152, 0, 0.15);
+}
+
+.ble-mini .mini-count {
+  margin-left: auto;
+  font-size: 14px;
+  color: var(--text-muted);
+  background: rgba(74, 158, 255, 0.15);
+  padding: 4px 12px;
+  border-radius: 12px;
+}

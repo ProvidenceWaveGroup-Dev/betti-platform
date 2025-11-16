@@ -1,115 +1,88 @@
-import React from 'react'
-import vitalsData from '../data/vitals.json'
+import React, { useState, useEffect } from 'react'
 import './Vitals.css'
 
-function Vitals() {
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'normal':
-        return 'status-normal'
-      case 'warning':
-        return 'status-warning'
-      case 'critical':
-        return 'status-critical'
-      default:
-        return 'status-normal'
-    }
-  }
+function Vitals({ isCollapsed = false }) {
+  const [vitals, setVitals] = useState([])
 
-  const formatLastUpdated = (timestamp) => {
-    const date = new Date(timestamp)
-    return date.toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true
-    })
+  useEffect(() => {
+    fetch('/src/data/vitals.json')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch vitals data')
+        }
+        return response.json()
+      })
+      .then(data => {
+        if (Array.isArray(data)) {
+          setVitals(data)
+        } else {
+          console.error('Vitals data is not an array:', data)
+          setVitals([])
+        }
+      })
+      .catch(error => {
+        console.error('Error loading vitals:', error)
+        // Set fallback data
+        setVitals([
+          { icon: '❤️', label: 'Blood Pressure', value: '120/80', unit: 'mmHg', status: 'Normal', updated: '2 min ago' },
+          { icon: '💓', label: 'Heart Rate', value: '72', unit: 'bpm', status: 'Normal', updated: '2 min ago' },
+          { icon: '🫁', label: 'Oxygen Sat', value: '98', unit: '%', status: 'Normal', updated: '3 min ago' },
+          { icon: '🌡️', label: 'Temperature', value: '98.6', unit: '°F', status: 'Normal', updated: '5 min ago' }
+        ])
+      })
+  }, [])
+
+  if (isCollapsed) {
+    return (
+      <div className="vitals-mini">
+        <div className="mini-header">
+          <span className="mini-icon">❤️</span>
+          <span className="mini-title">Health Vitals</span>
+          <span className="mini-status status-normal">● All Systems Normal</span>
+        </div>
+        <div className="mini-vitals-grid">
+          {Array.isArray(vitals) && vitals.slice(0, 4).map((vital, index) => (
+            <div key={index} className="mini-vital-item">
+              <span className="mini-vital-icon">{vital.icon}</span>
+              <div className="mini-vital-info">
+                <span className="mini-vital-value">{vital.value}</span>
+                <span className="mini-vital-label">{vital.label}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    )
   }
 
   return (
-    <div className="vitals-widget">
-      <div className="widget-header">
-        <h2 className="widget-title">Health Vitals</h2>
-        <span className="vitals-status">
+    <div className="vitals-card">
+      <div className="card-header">
+        <h2 className="card-title">Health Vitals</h2>
+        <span className="status-indicator status-normal">
           <span className="status-dot"></span>
           All Systems Normal
         </span>
       </div>
-
       <div className="vitals-grid">
-        <div className={`vital-card ${getStatusColor(vitalsData.bloodPressure.status)}`}>
-          <div className="vital-icon">❤️</div>
-          <div className="vital-info">
-            <div className="vital-label">Blood Pressure</div>
-            <div className="vital-value">
-              {vitalsData.bloodPressure.systolic}/{vitalsData.bloodPressure.diastolic}
-              <span className="vital-unit">{vitalsData.bloodPressure.unit}</span>
+        {Array.isArray(vitals) && vitals.map((vital, index) => (
+          <div key={index} className="vital-item">
+            <div className="vital-icon-wrapper">
+              <span className="vital-icon">{vital.icon}</span>
             </div>
-            <div className="vital-status">{vitalsData.bloodPressure.status}</div>
-            <div className="vital-time">
-              Updated {formatLastUpdated(vitalsData.bloodPressure.lastUpdated)}
-            </div>
-          </div>
-        </div>
-
-        <div className={`vital-card ${getStatusColor(vitalsData.heartRate.status)}`}>
-          <div className="vital-icon">💓</div>
-          <div className="vital-info">
-            <div className="vital-label">Heart Rate</div>
-            <div className="vital-value">
-              {vitalsData.heartRate.value}
-              <span className="vital-unit">{vitalsData.heartRate.unit}</span>
-            </div>
-            <div className="vital-status">{vitalsData.heartRate.status}</div>
-            <div className="vital-time">
-              Updated {formatLastUpdated(vitalsData.heartRate.lastUpdated)}
+            <div className="vital-content">
+              <div className="vital-label">{vital.label}</div>
+              <div className="vital-value">
+                {vital.value}
+                <span className="vital-unit">{vital.unit}</span>
+              </div>
+              <div className={`vital-status status-${vital.status.toLowerCase()}`}>
+                {vital.status}
+              </div>
+              <div className="vital-updated">Updated {vital.updated}</div>
             </div>
           </div>
-        </div>
-
-        <div className={`vital-card ${getStatusColor(vitalsData.oxygenSaturation.status)}`}>
-          <div className="vital-icon">🫁</div>
-          <div className="vital-info">
-            <div className="vital-label">Oxygen Saturation</div>
-            <div className="vital-value">
-              {vitalsData.oxygenSaturation.value}
-              <span className="vital-unit">{vitalsData.oxygenSaturation.unit}</span>
-            </div>
-            <div className="vital-status">{vitalsData.oxygenSaturation.status}</div>
-            <div className="vital-time">
-              Updated {formatLastUpdated(vitalsData.oxygenSaturation.lastUpdated)}
-            </div>
-          </div>
-        </div>
-
-        <div className={`vital-card ${getStatusColor(vitalsData.temperature.status)}`}>
-          <div className="vital-icon">🌡️</div>
-          <div className="vital-info">
-            <div className="vital-label">Temperature</div>
-            <div className="vital-value">
-              {vitalsData.temperature.value}
-              <span className="vital-unit">{vitalsData.temperature.unit}</span>
-            </div>
-            <div className="vital-status">{vitalsData.temperature.status}</div>
-            <div className="vital-time">
-              Updated {formatLastUpdated(vitalsData.temperature.lastUpdated)}
-            </div>
-          </div>
-        </div>
-
-        <div className={`vital-card ${getStatusColor(vitalsData.weight.status)}`}>
-          <div className="vital-icon">⚖️</div>
-          <div className="vital-info">
-            <div className="vital-label">Weight</div>
-            <div className="vital-value">
-              {vitalsData.weight.value}
-              <span className="vital-unit">{vitalsData.weight.unit}</span>
-            </div>
-            <div className="vital-status">{vitalsData.weight.status}</div>
-            <div className="vital-time">
-              Updated {formatLastUpdated(vitalsData.weight.lastUpdated)}
-            </div>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   )

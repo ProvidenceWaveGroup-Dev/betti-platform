@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import wsClient from '../services/websocket'
 import './BLEDevices.css'
 
-function BLEDevices() {
+function BLEDevices({ isCollapsed = false }) {
   const [devices, setDevices] = useState([])
   const [scanStatus, setScanStatus] = useState('idle')
   const [isConnected, setIsConnected] = useState(false)
@@ -110,6 +110,21 @@ function BLEDevices() {
       second: '2-digit',
       hour12: true
     })
+  }
+
+  if (isCollapsed) {
+    return (
+      <div className="ble-mini">
+        <div className="mini-header">
+          <span className="mini-icon">📡</span>
+          <span className="mini-title">BLE Devices</span>
+          <span className={`mini-connection ${isConnected ? 'connected' : 'disconnected'}`}>
+            ● {isConnected ? 'Connected' : 'Disconnected'}
+          </span>
+          <span className="mini-count">{devices.length} devices</span>
+        </div>
+      </div>
+    )
   }
 
   return (

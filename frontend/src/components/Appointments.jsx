@@ -1,55 +1,63 @@
-import React from 'react'
-import appointmentsData from '../data/appointments.json'
+import React, { useState, useEffect } from 'react'
 import './Appointments.css'
 
-function Appointments() {
-  const getTypeIcon = (type) => {
-    switch (type) {
-      case 'medical':
-        return '🏥'
-      case 'medication':
-        return '💊'
-      case 'therapy':
-        return '🏃'
-      case 'personal':
-        return '📞'
-      default:
-        return '📅'
-    }
+function Appointments({ isCollapsed = false }) {
+  const [appointments, setAppointments] = useState([])
+
+  useEffect(() => {
+    fetch('/src/data/appointments.json')
+      .then(response => response.json())
+      .then(data => setAppointments(data))
+      .catch(error => console.error('Error loading appointments:', error))
+  }, [])
+
+  const getNextAppointment = () => {
+    if (appointments.length === 0) return null
+    return appointments[0]
   }
 
-  const getTypeColor = (type) => {
-    switch (type) {
-      case 'medical':
-        return 'type-medical'
-      case 'medication':
-        return 'type-medication'
-      case 'therapy':
-        return 'type-therapy'
-      case 'personal':
-        return 'type-personal'
-      default:
-        return 'type-default'
-    }
+  if (isCollapsed) {
+    const next = getNextAppointment()
+    return (
+      <div className="appointments-mini">
+        <div className="mini-header">
+          <span className="mini-icon">📅</span>
+          <span className="mini-title">Today's Schedule</span>
+          <span className="mini-count">{appointments.length} events</span>
+        </div>
+        {next && (
+          <div className="mini-content">
+            <span className="mini-time">{next.time}</span>
+            <span className="mini-text">{next.title}</span>
+          </div>
+        )}
+      </div>
+    )
   }
 
   return (
-    <div className="appointments-widget">
-      <div className="widget-header">
-        <h2 className="widget-title">Today's Schedule</h2>
-        <span className="appointment-count">{appointmentsData.length} events</span>
+    <div className="appointments-card">
+      <div className="card-header">
+        <h2 className="card-title">Today's Schedule</h2>
+        <span className="event-count">{appointments.length} events</span>
       </div>
-
       <div className="appointments-list">
-        {appointmentsData.map((appointment) => (
-          <div key={appointment.id} className={`appointment-item ${getTypeColor(appointment.type)}`}>
-            <div className="appointment-icon">{getTypeIcon(appointment.type)}</div>
+        {appointments.map((apt, index) => (
+          <div key={index} className="appointment-item">
+            <div className="appointment-time-badge">
+              <div className="time-icon">{apt.icon}</div>
+            </div>
             <div className="appointment-details">
-              <div className="appointment-time">{appointment.time}</div>
-              <div className="appointment-title">{appointment.title}</div>
-              <div className="appointment-location">{appointment.location}</div>
-              {appointment.notes && (
-                <div className="appointment-notes">{appointment.notes}</div>
+              <div className="appointment-time">{apt.time}</div>
+              <div className="appointment-title">{apt.title}</div>
+              {apt.location && (
+                <div className="appointment-location">
+                  <span className="location-icon">📍</span>
+                  {apt.location}
+                </div>
+              )}
+              {apt.notes && (
+                <div className="appointment-notes">{apt.notes}</div>
               )}
             </div>
           </div>

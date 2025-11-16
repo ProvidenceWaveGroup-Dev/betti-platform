@@ -127,3 +127,62 @@
   padding-top: 8px;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
+
+/* Mini/Collapsed View */
+.appointments-mini {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(74, 158, 255, 0.2);
+  border-radius: 12px;
+  padding: 16px 24px;
+  transition: all 0.3s ease;
+}
+
+.appointments-mini:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(74, 158, 255, 0.4);
+}
+
+.mini-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.mini-icon {
+  font-size: 24px;
+}
+
+.mini-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-light);
+}
+
+.mini-count {
+  margin-left: auto;
+  font-size: 14px;
+  color: var(--text-muted);
+  background: rgba(74, 158, 255, 0.15);
+  padding: 4px 12px;
+  border-radius: 12px;
+}
+
+.mini-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 0;
+}
+
+.mini-time {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--accent-blue);
+  min-width: 90px;
+}
+
+.mini-text {
+  font-size: 15px;
+  color: var(--text-light);
+}
