@@ -104,7 +104,8 @@ class WebSocketClient {
   }
 }
 
-// Create singleton instance
-const wsClient = new WebSocketClient(`ws://${window.location.hostname}:3001`)
+// Create singleton instance - use secure WebSocket if page is HTTPS
+const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
+const wsClient = new WebSocketClient(`${protocol}//${window.location.hostname}:3001`)
 
 export default wsClient
