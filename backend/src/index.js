@@ -121,3 +121,4 @@ server.listen(PORT, HOST, () => {
   console.log(`📡 WebSocket server ready`)
   console.log(`🔵 Bluetooth LE scanning available`)
 })
+// restart

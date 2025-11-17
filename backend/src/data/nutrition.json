@@ -1,0 +1,20 @@
+{
+  "nutritionGoals": {
+    "calories": 2200,
+    "protein": 110,
+    "carbs": 275,
+    "fat": 73,
+    "fiber": 25,
+    "sodium": 2300
+  },
+  "dailySummary": {
+    "calories": { "consumed": 0, "target": 2200, "percentage": 0 },
+    "protein": { "consumed": 0, "target": 110, "percentage": 0 },
+    "carbs": { "consumed": 0, "target": 275, "percentage": 0 },
+    "fat": { "consumed": 0, "target": 73, "percentage": 0 },
+    "fiber": { "consumed": 0, "target": 25, "percentage": 0 },
+    "sodium": { "consumed": 0, "target": 2300, "percentage": 0 }
+  },
+  "todaysMeals": [],
+  "lastUpdated": "2025-11-17T16:00:00.000Z"
+}

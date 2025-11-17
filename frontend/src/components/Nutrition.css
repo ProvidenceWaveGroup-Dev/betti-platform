@@ -240,11 +240,24 @@
 .meal-item {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 12px;
   padding: 8px 12px;
   background: rgba(255, 136, 0, 0.05);
   border-radius: 8px;
   font-size: 13px;
+  transition: all 0.2s ease;
+}
+
+.meal-item:hover {
+  background: rgba(255, 136, 0, 0.1);
+}
+
+.meal-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
 }
 
 .meal-time {
@@ -262,6 +275,32 @@
 .meal-calories {
   color: #aaa;
   font-weight: 500;
+}
+
+.delete-meal-button {
+  background: rgba(255, 107, 107, 0.8);
+  border: none;
+  color: #fff;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  opacity: 0;
+  flex-shrink: 0;
+}
+
+.meal-item:hover .delete-meal-button {
+  opacity: 1;
+}
+
+.delete-meal-button:hover {
+  background: rgba(255, 107, 107, 1);
+  transform: scale(1.1);
 }
 
 /* Action Buttons */

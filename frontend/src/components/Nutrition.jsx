@@ -1,38 +1,61 @@
 import React, { useState, useEffect } from 'react'
+import nutritionApi from '../services/nutritionApi'
+import MealLogModal from './MealLogModal'
 import './Nutrition.css'
 
 function Nutrition({ isCollapsed = false }) {
   const [nutritionData, setNutritionData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [showMealModal, setShowMealModal] = useState(false)
 
   useEffect(() => {
-    fetch('/src/data/nutrition.json')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Failed to fetch nutrition data')
-        }
-        return response.json()
-      })
-      .then(data => {
-        setNutritionData(data)
-        setLoading(false)
-      })
-      .catch(error => {
-        console.error('Error loading nutrition data:', error)
-        setError(error.message)
-        // Set fallback data
-        setNutritionData({
-          dailySummary: {
-            calories: { consumed: 1800, target: 2200, percentage: 82 },
-            protein: { consumed: 85, target: 110, percentage: 77 },
-            carbs: { consumed: 200, target: 275, percentage: 73 },
-            fat: { consumed: 65, target: 73, percentage: 89 }
-          }
-        })
-        setLoading(false)
-      })
+    loadNutritionData()
   }, [])
+
+  const loadNutritionData = async () => {
+    try {
+      setLoading(true)
+      setError(null)
+
+      const data = await nutritionApi.getNutritionDashboardData()
+      setNutritionData(data)
+    } catch (error) {
+      console.error('Error loading nutrition data:', error)
+      setError(error.message)
+
+      // Set fallback data in case backend is down
+      setNutritionData({
+        dailySummary: {
+          calories: { consumed: 1800, target: 2200, percentage: 82 },
+          protein: { consumed: 85, target: 110, percentage: 77 },
+          carbs: { consumed: 200, target: 275, percentage: 73 },
+          fat: { consumed: 65, target: 73, percentage: 89 },
+          fiber: { consumed: 18, target: 25, percentage: 72 },
+          sodium: { consumed: 1580, target: 2300, percentage: 69 }
+        },
+        recentFoods: ['Grilled Chicken', 'Greek Yogurt', 'Oatmeal', 'Apple'],
+        lastUpdated: new Date().toISOString()
+      })
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleMealLogged = () => {
+    // Reload nutrition data after logging a meal
+    loadNutritionData()
+  }
+
+  const handleDeleteMeal = async (mealId) => {
+    try {
+      await nutritionApi.deleteMeal(mealId)
+      loadNutritionData() // Refresh data after deletion
+    } catch (error) {
+      console.error('Failed to delete meal:', error)
+      setError('Failed to delete meal: ' + error.message)
+    }
+  }
 
   if (loading) {
     return (
@@ -153,9 +176,18 @@ function Nutrition({ isCollapsed = false }) {
           <div className="meals-list">
             {nutritionData.todaysMeals.slice(-3).map(meal => (
               <div key={meal.id} className="meal-item">
-                <div className="meal-time">{meal.time}</div>
-                <div className="meal-type">{meal.mealType}</div>
-                <div className="meal-calories">{meal.totalCalories} kcal</div>
+                <div className="meal-info">
+                  <div className="meal-time">{meal.time}</div>
+                  <div className="meal-type">{meal.mealType}</div>
+                  <div className="meal-calories">{meal.totalCalories} kcal</div>
+                </div>
+                <button
+                  className="delete-meal-button"
+                  onClick={() => handleDeleteMeal(meal.id)}
+                  title="Delete meal"
+                >
+                  ×
+                </button>
               </div>
             ))}
           </div>
@@ -163,7 +195,13 @@ function Nutrition({ isCollapsed = false }) {
       )}
 
       <div className="nutrition-actions">
-        <button className="action-button primary">
+        <button
+          className="action-button primary"
+          onClick={() => {
+            console.log('🍽️ Log Meal button clicked')
+            setShowMealModal(true)
+          }}
+        >
           <span className="button-icon">➕</span>
           Log Meal
         </button>
@@ -172,6 +210,12 @@ function Nutrition({ isCollapsed = false }) {
           View Details
         </button>
       </div>
+
+      <MealLogModal
+        isOpen={showMealModal}
+        onClose={() => setShowMealModal(false)}
+        onMealLogged={handleMealLogged}
+      />
     </div>
   )
 }
