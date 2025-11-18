@@ -141,6 +141,9 @@ The app features a sophisticated panel state management system in `frontend/src/
 
 ## Development Notes
 
+### Project Roadmap
+See `TODO.md` for a comprehensive list of planned features, enhancements, and future development priorities organized by category and priority level.
+
 ### Testing and Linting
 This project currently does not have configured linting (ESLint) or testing frameworks. The backend `package.json` includes a placeholder test script that exits with an error.
 
