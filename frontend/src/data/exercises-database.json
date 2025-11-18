@@ -1,0 +1,211 @@
+{
+  "exercises": [
+    {
+      "id": 1,
+      "name": "Bench Press",
+      "category": "Chest",
+      "type": "Strength",
+      "equipment": "Barbell",
+      "muscle_groups": ["Chest", "Shoulders", "Triceps"],
+      "calories_per_minute": 8,
+      "difficulty": "Intermediate"
+    },
+    {
+      "id": 2,
+      "name": "Squats",
+      "category": "Legs",
+      "type": "Strength",
+      "equipment": "Barbell",
+      "muscle_groups": ["Quadriceps", "Glutes", "Hamstrings"],
+      "calories_per_minute": 10,
+      "difficulty": "Beginner"
+    },
+    {
+      "id": 3,
+      "name": "Deadlift",
+      "category": "Back",
+      "type": "Strength",
+      "equipment": "Barbell",
+      "muscle_groups": ["Back", "Hamstrings", "Glutes"],
+      "calories_per_minute": 12,
+      "difficulty": "Advanced"
+    },
+    {
+      "id": 4,
+      "name": "Pull-ups",
+      "category": "Back",
+      "type": "Strength",
+      "equipment": "Pull-up Bar",
+      "muscle_groups": ["Back", "Biceps"],
+      "calories_per_minute": 9,
+      "difficulty": "Intermediate"
+    },
+    {
+      "id": 5,
+      "name": "Push-ups",
+      "category": "Chest",
+      "type": "Strength",
+      "equipment": "None",
+      "muscle_groups": ["Chest", "Shoulders", "Triceps"],
+      "calories_per_minute": 7,
+      "difficulty": "Beginner"
+    },
+    {
+      "id": 6,
+      "name": "Running",
+      "category": "Cardio",
+      "type": "Cardio",
+      "equipment": "None",
+      "muscle_groups": ["Legs", "Cardiovascular"],
+      "calories_per_minute": 12,
+      "difficulty": "Beginner"
+    },
+    {
+      "id": 7,
+      "name": "Cycling",
+      "category": "Cardio",
+      "type": "Cardio",
+      "equipment": "Bike",
+      "muscle_groups": ["Legs", "Cardiovascular"],
+      "calories_per_minute": 10,
+      "difficulty": "Beginner"
+    },
+    {
+      "id": 8,
+      "name": "Rowing Machine",
+      "category": "Cardio",
+      "type": "Cardio",
+      "equipment": "Rowing Machine",
+      "muscle_groups": ["Back", "Legs", "Cardiovascular"],
+      "calories_per_minute": 11,
+      "difficulty": "Intermediate"
+    },
+    {
+      "id": 9,
+      "name": "Overhead Press",
+      "category": "Shoulders",
+      "type": "Strength",
+      "equipment": "Barbell",
+      "muscle_groups": ["Shoulders", "Triceps"],
+      "calories_per_minute": 7,
+      "difficulty": "Intermediate"
+    },
+    {
+      "id": 10,
+      "name": "Plank",
+      "category": "Core",
+      "type": "Strength",
+      "equipment": "None",
+      "muscle_groups": ["Core", "Shoulders"],
+      "calories_per_minute": 4,
+      "difficulty": "Beginner"
+    },
+    {
+      "id": 11,
+      "name": "Yoga",
+      "category": "Flexibility",
+      "type": "Flexibility",
+      "equipment": "Yoga Mat",
+      "muscle_groups": ["Full Body"],
+      "calories_per_minute": 3,
+      "difficulty": "Beginner"
+    },
+    {
+      "id": 12,
+      "name": "Burpees",
+      "category": "HIIT",
+      "type": "HIIT",
+      "equipment": "None",
+      "muscle_groups": ["Full Body", "Cardiovascular"],
+      "calories_per_minute": 15,
+      "difficulty": "Advanced"
+    },
+    {
+      "id": 13,
+      "name": "Mountain Climbers",
+      "category": "HIIT",
+      "type": "HIIT",
+      "equipment": "None",
+      "muscle_groups": ["Core", "Legs", "Cardiovascular"],
+      "calories_per_minute": 12,
+      "difficulty": "Intermediate"
+    },
+    {
+      "id": 14,
+      "name": "Jumping Jacks",
+      "category": "Cardio",
+      "type": "Cardio",
+      "equipment": "None",
+      "muscle_groups": ["Full Body", "Cardiovascular"],
+      "calories_per_minute": 8,
+      "difficulty": "Beginner"
+    },
+    {
+      "id": 15,
+      "name": "Dumbbell Curls",
+      "category": "Arms",
+      "type": "Strength",
+      "equipment": "Dumbbells",
+      "muscle_groups": ["Biceps"],
+      "calories_per_minute": 5,
+      "difficulty": "Beginner"
+    },
+    {
+      "id": 16,
+      "name": "Tricep Dips",
+      "category": "Arms",
+      "type": "Strength",
+      "equipment": "Bench",
+      "muscle_groups": ["Triceps", "Shoulders"],
+      "calories_per_minute": 6,
+      "difficulty": "Intermediate"
+    },
+    {
+      "id": 17,
+      "name": "Leg Press",
+      "category": "Legs",
+      "type": "Strength",
+      "equipment": "Leg Press Machine",
+      "muscle_groups": ["Quadriceps", "Glutes"],
+      "calories_per_minute": 9,
+      "difficulty": "Beginner"
+    },
+    {
+      "id": 18,
+      "name": "Lunges",
+      "category": "Legs",
+      "type": "Strength",
+      "equipment": "None",
+      "muscle_groups": ["Quadriceps", "Glutes", "Hamstrings"],
+      "calories_per_minute": 8,
+      "difficulty": "Beginner"
+    },
+    {
+      "id": 19,
+      "name": "Swimming",
+      "category": "Cardio",
+      "type": "Cardio",
+      "equipment": "Pool",
+      "muscle_groups": ["Full Body", "Cardiovascular"],
+      "calories_per_minute": 11,
+      "difficulty": "Intermediate"
+    },
+    {
+      "id": 20,
+      "name": "Kettlebell Swings",
+      "category": "HIIT",
+      "type": "HIIT",
+      "equipment": "Kettlebell",
+      "muscle_groups": ["Glutes", "Hamstrings", "Core"],
+      "calories_per_minute": 13,
+      "difficulty": "Intermediate"
+    }
+  ],
+  "categories": [
+    "Chest", "Back", "Legs", "Shoulders", "Arms", "Core", "Cardio", "HIIT", "Flexibility"
+  ],
+  "equipment": [
+    "None", "Barbell", "Dumbbells", "Pull-up Bar", "Bench", "Kettlebell",
+    "Bike", "Rowing Machine", "Yoga Mat", "Pool", "Leg Press Machine"
+  ]
+}

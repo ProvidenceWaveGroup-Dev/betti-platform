@@ -1,0 +1,211 @@
+{
+  "user": {
+    "name": "User",
+    "fitnessLevel": "intermediate",
+    "preferences": {
+      "workoutTypes": ["strength", "cardio", "yoga"],
+      "duration": 45,
+      "frequency": 5
+    }
+  },
+  "goals": {
+    "daily": {
+      "caloriesBurn": 300,
+      "workoutDuration": 30,
+      "steps": 8000
+    },
+    "weekly": {
+      "workouts": 5,
+      "totalMinutes": 225,
+      "totalCalories": 1600,
+      "strengthSessions": 3,
+      "cardioSessions": 2
+    },
+    "monthly": {
+      "workouts": 20,
+      "totalMinutes": 900,
+      "totalCalories": 6400,
+      "weightLossGoal": 2,
+      "strengthGain": "5%"
+    }
+  },
+  "currentStats": {
+    "daily": {
+      "date": "2025-11-18",
+      "caloriesBurned": 320,
+      "workoutDuration": 45,
+      "steps": 9200,
+      "completed": true
+    },
+    "weekly": {
+      "startDate": "2025-11-12",
+      "workoutsCompleted": 4,
+      "totalMinutes": 180,
+      "totalCalories": 1280,
+      "strengthSessions": 3,
+      "cardioSessions": 1
+    },
+    "monthly": {
+      "month": "2025-11",
+      "workoutsCompleted": 16,
+      "totalMinutes": 720,
+      "totalCalories": 5120,
+      "avgWorkoutDuration": 45,
+      "consistencyStreak": 12
+    }
+  },
+  "lastWorkout": {
+    "date": "2025-11-18",
+    "type": "Strength Training",
+    "duration": 45,
+    "caloriesBurned": 320,
+    "exercises": [
+      {
+        "name": "Bench Press",
+        "sets": 3,
+        "reps": [10, 8, 8],
+        "weight": "135 lbs",
+        "restTime": 90
+      },
+      {
+        "name": "Squats",
+        "sets": 3,
+        "reps": [12, 10, 10],
+        "weight": "185 lbs",
+        "restTime": 120
+      },
+      {
+        "name": "Deadlift",
+        "sets": 2,
+        "reps": [8, 6],
+        "weight": "225 lbs",
+        "restTime": 180
+      }
+    ],
+    "notes": "Felt strong today, increased deadlift weight",
+    "rating": 4.5
+  },
+  "workoutHistory": [
+    {
+      "date": "2025-11-18",
+      "type": "Strength Training",
+      "duration": 45,
+      "caloriesBurned": 320,
+      "exercises": 6,
+      "rating": 4.5,
+      "completed": true
+    },
+    {
+      "date": "2025-11-17",
+      "type": "Cardio",
+      "duration": 30,
+      "caloriesBurned": 280,
+      "exercises": 1,
+      "rating": 4.0,
+      "completed": true
+    },
+    {
+      "date": "2025-11-15",
+      "type": "Yoga",
+      "duration": 40,
+      "caloriesBurned": 120,
+      "exercises": 8,
+      "rating": 4.2,
+      "completed": true
+    },
+    {
+      "date": "2025-11-13",
+      "type": "HIIT",
+      "duration": 25,
+      "caloriesBurned": 340,
+      "exercises": 5,
+      "rating": 4.8,
+      "completed": true
+    },
+    {
+      "date": "2025-11-11",
+      "type": "Strength Training",
+      "duration": 50,
+      "caloriesBurned": 350,
+      "exercises": 7,
+      "rating": 4.3,
+      "completed": true
+    },
+    {
+      "date": "2025-11-09",
+      "type": "Cardio",
+      "duration": 35,
+      "caloriesBurned": 290,
+      "exercises": 2,
+      "rating": 3.8,
+      "completed": true
+    },
+    {
+      "date": "2025-11-07",
+      "type": "Strength Training",
+      "duration": 48,
+      "caloriesBurned": 335,
+      "exercises": 6,
+      "rating": 4.4,
+      "completed": true
+    }
+  ],
+  "trends": {
+    "last7Days": {
+      "avgDuration": 39,
+      "avgCalories": 292,
+      "totalWorkouts": 7,
+      "consistencyRate": 85,
+      "improvementTrend": "increasing"
+    },
+    "last30Days": {
+      "avgDuration": 42,
+      "avgCalories": 298,
+      "totalWorkouts": 22,
+      "consistencyRate": 88,
+      "improvementTrend": "stable"
+    }
+  },
+  "analytics": {
+    "weeklyProgress": [
+      { "week": "Week 1", "workouts": 5, "calories": 1420, "minutes": 210 },
+      { "week": "Week 2", "workouts": 4, "calories": 1180, "minutes": 165 },
+      { "week": "Week 3", "workouts": 6, "calories": 1650, "minutes": 240 },
+      { "week": "Week 4", "workouts": 5, "calories": 1480, "minutes": 195 }
+    ],
+    "monthlyProgress": [
+      { "month": "Sep", "workouts": 18, "calories": 5200, "minutes": 750 },
+      { "month": "Oct", "workouts": 20, "calories": 5800, "minutes": 820 },
+      { "month": "Nov", "workouts": 16, "calories": 4800, "minutes": 720 }
+    ],
+    "exerciseTypeBreakdown": [
+      { "type": "Strength", "percentage": 45, "sessions": 9 },
+      { "type": "Cardio", "percentage": 30, "sessions": 6 },
+      { "type": "HIIT", "percentage": 15, "sessions": 3 },
+      { "type": "Yoga", "percentage": 10, "sessions": 2 }
+    ]
+  },
+  "achievements": [
+    {
+      "id": "consistency_7",
+      "title": "7-Day Streak",
+      "description": "Worked out for 7 consecutive days",
+      "unlocked": true,
+      "date": "2025-11-15"
+    },
+    {
+      "id": "calorie_milestone",
+      "title": "Calorie Crusher",
+      "description": "Burned 1000+ calories in a week",
+      "unlocked": true,
+      "date": "2025-11-10"
+    },
+    {
+      "id": "strength_progress",
+      "title": "Getting Stronger",
+      "description": "Increased weight in 3 different exercises",
+      "unlocked": false,
+      "progress": 67
+    }
+  ]
+}

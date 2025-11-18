@@ -1,0 +1,61 @@
+{
+  "dailySummary": {
+    "date": "2025-11-18",
+    "workoutCompleted": true,
+    "totalDuration": 45,
+    "caloriesBurned": 320,
+    "goals": {
+      "weeklyWorkouts": { "completed": 4, "target": 5, "percentage": 80 },
+      "weeklyMinutes": { "completed": 180, "target": 225, "percentage": 80 },
+      "weeklyCalories": { "completed": 1280, "target": 1600, "percentage": 80 }
+    },
+    "todaysWorkout": {
+      "type": "Strength Training",
+      "duration": 45,
+      "caloriesBurned": 320,
+      "exercises": [
+        {
+          "name": "Bench Press",
+          "sets": 3,
+          "reps": "8-10",
+          "weight": "135 lbs"
+        },
+        {
+          "name": "Squats",
+          "sets": 3,
+          "reps": "12",
+          "weight": "185 lbs"
+        }
+      ]
+    }
+  },
+  "recentWorkouts": [
+    {
+      "date": "2025-11-17",
+      "type": "Cardio",
+      "duration": 30,
+      "caloriesBurned": 280,
+      "activity": "Running"
+    },
+    {
+      "date": "2025-11-15",
+      "type": "Strength Training",
+      "duration": 50,
+      "caloriesBurned": 350,
+      "activity": "Upper Body"
+    },
+    {
+      "date": "2025-11-13",
+      "type": "Yoga",
+      "duration": 40,
+      "caloriesBurned": 120,
+      "activity": "Vinyasa Flow"
+    }
+  ],
+  "weeklyStats": {
+    "workoutsCompleted": 4,
+    "totalDuration": 165,
+    "totalCaloriesBurned": 1070,
+    "averageWorkoutDuration": 41.25
+  }
+}
