@@ -1,0 +1,232 @@
+// Mobile Dashboard-specific styles - import in MobileDashboard component
+@media screen and (max-width: 1199px) {
+  .mobile-dashboard {
+    width: 100%;
+    max-width: 100%;
+    padding-bottom: 20px;
+    box-sizing: border-box;
+    overflow-x: hidden; // No horizontal scroll
+
+    h1 {
+      color: white;
+      font-size: 28px;
+      margin-bottom: 24px;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: white;
+      font-size: 16px;
+      margin-bottom: 12px;
+    }
+
+    // Quick actions - ensure they don't overflow
+    .quick-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr; // 2 columns for better fit
+      gap: 12px;
+      margin-bottom: 24px;
+      width: 100%; // Constrain to container
+      box-sizing: border-box;
+
+      .action-card {
+        background: rgba(74, 158, 255, 0.1);
+        border: 1px solid rgba(74, 158, 255, 0.3);
+        border-radius: 12px;
+        padding: 16px 8px; // Reduce horizontal padding
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        transition: all 150ms ease;
+        min-width: 0; // Allow flex item to shrink below content size
+        box-sizing: border-box;
+
+        &:active {
+          transform: scale(0.98);
+          background: rgba(74, 158, 255, 0.15);
+        }
+
+        .action-icon {
+          font-size: 24px; // Slightly smaller
+        }
+
+        .action-label {
+          color: white;
+          font-size: 11px; // Smaller text
+          font-weight: 500;
+          text-align: center;
+          word-break: break-word; // Prevent text overflow
+          line-height: 1.2;
+        }
+      }
+
+      // If there's an odd number of items, make the last one span 2 columns
+      .action-card:last-child:nth-child(odd) {
+        grid-column: span 2;
+        max-width: 200px; // Prevent it from getting too wide
+        margin: 0 auto; // Center it
+      }
+    }
+
+    // Stats card and other cards
+    .card-mobile {
+      background: rgba(42, 42, 42, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      cursor: pointer;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+
+      &.interactive {
+        transition: all 200ms ease;
+
+        &:active {
+          transform: scale(0.98);
+          background: rgba(52, 52, 52, 0.8);
+        }
+      }
+
+      h3 {
+        color: white;
+        font-size: 16px;
+        margin-bottom: 12px;
+        margin-top: 0;
+      }
+    }
+
+    // Health stats grid
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+      width: 100%;
+
+      .info-item {
+        text-align: center;
+        min-width: 0; // Allow shrinking
+
+        .label {
+          color: #a0a0a0;
+          font-size: 12px;
+          margin-bottom: 4px;
+        }
+
+        .value {
+          color: white;
+          font-weight: 600;
+          font-size: 16px;
+        }
+      }
+    }
+
+    .status {
+      color: #4ade80;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+
+      .dot {
+        width: 8px;
+        height: 8px;
+        background: #4ade80;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+    }
+
+    // Appointment card specific styles
+    .appointment-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .appointment-details {
+        flex: 1;
+        min-width: 0; // Allow shrinking
+
+        .time {
+          color: #4a9eff;
+          font-size: 20px;
+          font-weight: 600;
+          margin-bottom: 4px;
+        }
+
+        .title {
+          color: white;
+          font-size: 16px;
+          margin-bottom: 2px;
+        }
+
+        .subtitle {
+          color: #a0a0a0;
+          font-size: 14px;
+        }
+      }
+
+      .countdown {
+        color: #4a9eff;
+        font-size: 12px;
+        font-weight: 500;
+        text-align: right;
+        white-space: nowrap;
+      }
+    }
+
+    // Progress info and bars
+    .progress-info {
+      color: white;
+      margin-bottom: 8px;
+      font-size: 14px;
+
+      .progress-text {
+        color: #a0a0a0;
+        font-size: 14px;
+      }
+    }
+
+    .progress-bar {
+      background: rgba(255, 255, 255, 0.1);
+      height: 8px;
+      border-radius: 4px;
+      overflow: hidden;
+      width: 100%;
+
+      .progress-fill {
+        background: linear-gradient(90deg, #4a9eff, #3b82f6);
+        height: 100%;
+        transition: width 300ms ease;
+
+        &.complete {
+          background: linear-gradient(90deg, #4ade80, #22c55e);
+        }
+      }
+    }
+
+    // Ensure all content stays within bounds
+    * {
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+
+    // Prevent any potential horizontal overflow
+    > * {
+      width: 100%;
+      max-width: 100%;
+    }
+  }
+}
+
+// Desktop - hide mobile dashboard styles
+@media screen and (min-width: 1200px) {
+  .mobile-dashboard {
+    display: none !important;
+  }
+}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Header from './components/Header'
 import Appointments from './components/Appointments'
 import Vitals from './components/Vitals'
@@ -8,7 +8,11 @@ import Hydration from './components/Hydration'
 import Medication from './components/Medication'
 import BLEDevices from './components/BLEDevices'
 import VideoChat from './components/VideoChat'
+import MobileLayout from './layouts/MobileLayout'
+import ErrorBoundary from './components/ErrorBoundary'
+import { detectDevice, forceMobileMode } from './utils/deviceDetection'
 import './App.css'
+import './styles/mobile.scss'
 
 function App() {
   const [activeView, setActiveView] = useState('home')
@@ -23,6 +27,32 @@ function App() {
     video: 'hidden'
   })
   const [maximizedPanel, setMaximizedPanel] = useState(null)
+
+  // Device detection state
+  const [deviceInfo, setDeviceInfo] = useState(() => {
+    const info = detectDevice()
+    console.log('📱 DEVICE DETECTION INIT:', info)
+    return info
+  })
+
+  const [isMobile, setIsMobile] = useState(() => {
+    return forceMobileMode() || detectDevice().isMobile
+  })
+
+  // Handle window resize for responsive detection
+  useEffect(() => {
+    const handleResize = () => {
+      const newDeviceInfo = detectDevice()
+      const mobile = forceMobileMode() || newDeviceInfo.isMobile
+      console.log('📱 RESIZE DETECTION:', { newDeviceInfo, mobile })
+      setDeviceInfo(newDeviceInfo)
+      setIsMobile(mobile)
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
 
   // Static panel order for sidebar
   const panelOrder = ['health', 'appointments', 'medication', 'nutrition', 'fitness', 'hydration', 'sensors']
@@ -91,7 +121,7 @@ function App() {
       setPanelState(newState)
     }
 
-    console.log('Navigated to:', view, 'Maximized:', view === maximizedPanel ? null : view)
+    console.log('🔄 Navigated to:', view, 'Maximized:', view === maximizedPanel ? null : view)
   }
 
   const layoutConfig = {
@@ -190,6 +220,29 @@ function App() {
     )
   }
 
+  // If mobile, render mobile layout
+  if (isMobile) {
+    console.log('📱 RENDERING MOBILE LAYOUT:', {
+      isMobile: true,
+      deviceType: deviceInfo.deviceType,
+      confidence: deviceInfo.confidence,
+      windowSize: `${window.innerWidth}x${window.innerHeight}`,
+      forcedMobile: forceMobileMode()
+    })
+    return (
+      <ErrorBoundary>
+        <MobileLayout
+          panelState={panelState}
+          setPanelState={setPanelState}
+          deviceInfo={deviceInfo}
+        />
+      </ErrorBoundary>
+    )
+  }
+
+  console.log('🖥️ RENDERING DESKTOP LAYOUT - isMobile=false, width=' + window.innerWidth)
+
+  // Desktop layout (existing functionality unchanged)
   return (
     <div className="app">
       <Header onNavigate={handleNavigate} activeView={activeView} />

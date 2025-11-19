@@ -1,0 +1,338 @@
+// Prevent body scrolling on mobile
+@media screen and (max-width: 1199px) {
+  html {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    position: fixed;
+    touch-action: pan-y; // Allow vertical scrolling within containers
+  }
+
+  body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    position: fixed;
+    margin: 0;
+    padding: 0;
+    touch-action: pan-y;
+  }
+
+  #root {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    position: fixed;
+  }
+
+  // Prevent horizontal overflow on all elements
+  * {
+    max-width: 100vw;
+    box-sizing: border-box;
+  }
+
+  // Hide desktop layout completely on mobile
+  .app {
+    display: none !important;
+  }
+
+  // Mobile app container
+  .mobile-app {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    max-width: 100vw;
+    max-height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+    overflow: hidden; // CRITICAL: Prevents scrolling of container
+    color: var(--text-light, #ffffff);
+  }
+
+  // Mobile header styles
+  .mobile-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100vw;
+    max-width: 100vw;
+    height: 48px;
+    padding-top: env(safe-area-inset-top);
+    background: rgba(26, 26, 26, 0.95);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 16px;
+    padding-right: 16px;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    box-sizing: border-box;
+    overflow: hidden; // Prevent any overflow
+
+    .header-info {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      overflow: hidden; // Prevent text overflow
+      white-space: nowrap;
+
+      .time {
+        font-size: 14px;
+        font-weight: 600;
+        color: white;
+      }
+
+      .location {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.7);
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    .header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+
+      .time {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text-light, #ffffff);
+        line-height: 1.2;
+      }
+
+      .weather {
+        font-size: 12px;
+        color: var(--text-muted, #a0a0a0);
+        line-height: 1.2;
+      }
+    }
+
+    .hamburger-menu {
+      background: none;
+      border: none;
+      color: var(--text-light, #ffffff);
+      font-size: 24px;
+      padding: 8px;
+      cursor: pointer;
+      min-width: 48px;
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      transition: background 150ms ease;
+
+      &:active {
+        background: rgba(255, 255, 255, 0.1);
+      }
+    }
+  }
+
+  // Mobile content area
+  .mobile-content {
+    flex: 1;
+    width: 100%;
+    max-width: 100vw; // Prevent horizontal overflow
+    overflow-y: auto; // Only vertical scroll for content
+    overflow-x: hidden; // No horizontal scroll
+    -webkit-overflow-scrolling: touch;
+    padding: 16px;
+    padding-top: calc(64px + env(safe-area-inset-top));
+    padding-bottom: calc(96px + env(safe-area-inset-bottom)); // Updated for even larger navigation
+    min-height: 0; // Important for flexbox
+    box-sizing: border-box; // Include padding in width calculation
+  }
+
+  // Bottom navigation styles
+  .mobile-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100vw;
+    max-width: 100vw;
+    height: 80px; // Further increased height for more room
+    padding-top: 12px; // More top padding to give icons room
+    padding-bottom: calc(12px + env(safe-area-inset-bottom)); // More bottom padding
+    background: rgba(26, 26, 26, 0.95);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 1000;
+    box-sizing: border-box;
+    overflow: hidden;
+
+    .nav-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.6);
+      cursor: pointer;
+      padding: 8px 4px; // Reduce horizontal padding
+      min-height: 56px;
+      transition: color 150ms ease;
+      -webkit-tap-highlight-color: transparent;
+      max-width: 20%; // Each of 5 items gets 20%
+
+      &.active {
+        color: var(--accent-blue, #4a9eff);
+
+        .nav-icon {
+          transform: scale(1.1);
+        }
+      }
+
+      &:active {
+        transform: scale(0.95);
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+      }
+
+      .nav-icon {
+        font-size: 22px; // Slightly smaller
+        transition: transform 150ms ease;
+      }
+
+      .nav-label {
+        font-size: 11px; // Smaller font
+        font-weight: 500;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+        text-align: center;
+        line-height: 1.2;
+      }
+    }
+  }
+
+  // Mobile screen wrapper
+  .mobile-screen {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    padding: 0;
+
+    h2 {
+      color: white;
+      font-size: 24px;
+      margin-bottom: 16px;
+      margin-top: 0;
+    }
+
+    p {
+      color: var(--text-muted, #a0a0a0);
+      line-height: 1.5;
+    }
+
+    // Ensure child components don't overflow
+    > * {
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+  }
+
+  // Touch-friendly button styles
+  .button-mobile {
+    min-height: 56px;
+    min-width: 56px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 150ms ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    &:active {
+      transform: scale(0.98);
+    }
+
+    &.primary {
+      background: var(--accent-blue, #4a9eff);
+      color: white;
+
+      &:active {
+        background: #3b82f6;
+      }
+    }
+
+    &.secondary {
+      background: #3a3a3a;
+      color: white;
+
+      &:active {
+        background: #4a4a4a;
+      }
+    }
+  }
+
+  // Mobile card styles
+  .card-mobile {
+    background: #2a2a2a;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    &.interactive {
+      cursor: pointer;
+      transition: all 200ms ease;
+
+      &:active {
+        transform: scale(0.98);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+      }
+    }
+  }
+
+  // Mobile input styles
+  .input-mobile {
+    background: #2a2a2a;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 16px;
+    font-size: 16px;
+    color: var(--text-light, #ffffff);
+    min-height: 56px;
+    width: 100%;
+
+    &:focus {
+      outline: none;
+      border-color: var(--accent-blue, #4a9eff);
+      box-shadow: 0 0 0 3px rgba(74, 158, 255, 0.2);
+    }
+
+    &::placeholder {
+      color: var(--text-muted, #a0a0a0);
+    }
+  }
+}
+
+// Desktop remains unchanged - ensure mobile styles don't affect desktop
+@media screen and (min-width: 1200px) {
+  .mobile-app {
+    display: none !important;
+  }
+}
