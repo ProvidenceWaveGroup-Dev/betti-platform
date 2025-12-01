@@ -32,3 +32,10 @@ coverage/
 *.tmp
 .cache/
 nul
+
+# Database files (keep schema, ignore data)
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+backend/data/*.db

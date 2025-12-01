@@ -7,9 +7,20 @@ import { readFileSync } from 'fs'
 import { join } from 'path'
 import dotenv from 'dotenv'
 import bleRoutes from './routes/ble.js'
-import bleScanner from './services/bleScanner.js' // Import bleScanner
+import vitalsRoutes from './routes/vitals.js'
+import bleScanner from './services/bleScanner.js'
+import bleHealthProcessor from './services/bleHealthProcessor.js'
+import database from './services/database.js'
 
 dotenv.config()
+
+// Initialize database before anything else
+try {
+  database.init()
+} catch (error) {
+  console.error('❌ Failed to initialize database:', error.message)
+  process.exit(1)
+}
 
 const app = express()
 const PORT = process.env.PORT || 3001
@@ -120,9 +131,30 @@ bleScanner.on('bleScanStatus', (status) => {
   })
 })
 
+// Listen for BLE Health Processor events and broadcast vitals updates
+bleHealthProcessor.on('vitalRecorded', (data) => {
+  broadcast({
+    type: 'vital-update',
+    vitalType: data.vitalType,
+    vital: data.vital,
+    deviceAddress: data.deviceAddress,
+    timestamp: new Date().toISOString()
+  })
+})
+
+bleHealthProcessor.on('error', (error) => {
+  broadcast({
+    type: 'vital-error',
+    vitalType: error.type,
+    deviceAddress: error.deviceAddress,
+    error: error.error
+  })
+})
+
 
 // Routes
 app.use('/api/ble', bleRoutes)
+app.use('/api/vitals', vitalsRoutes)
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
@@ -139,4 +171,41 @@ server.listen(PORT, HOST, () => {
   console.log(`📡 WebSocket server ready`)
   console.log(`🔵 Bluetooth LE scanning available`)
 })
-// restart
+
+// Graceful shutdown handlers
+function shutdown(signal) {
+  console.log(`\n${signal} received. Shutting down gracefully...`)
+
+  // Close WebSocket connections
+  wsClients.forEach(client => {
+    try {
+      client.close(1000, 'Server shutting down')
+    } catch (e) {
+      // Ignore errors on close
+    }
+  })
+
+  // Close the HTTP/HTTPS server
+  server.close(() => {
+    console.log('🔌 HTTP server closed')
+
+    // Cleanup BLE health processor
+    bleHealthProcessor.destroy()
+
+    // Close database connection
+    database.close()
+
+    console.log('👋 Goodbye!')
+    process.exit(0)
+  })
+
+  // Force exit after 5 seconds if graceful shutdown fails
+  setTimeout(() => {
+    console.error('⚠️ Forcing shutdown after timeout')
+    database.close()
+    process.exit(1)
+  }, 5000)
+}
+
+process.on('SIGTERM', () => shutdown('SIGTERM'))
+process.on('SIGINT', () => shutdown('SIGINT'))
