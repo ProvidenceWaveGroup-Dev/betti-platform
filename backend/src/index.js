@@ -46,7 +46,7 @@ try {
   // Look for certificates (Vite's basicSsl creates them in node_modules/.vite/basic-ssl)
   const certDir = join(process.cwd(), '../frontend/node_modules/.vite/basic-ssl')
   const cert = readFileSync(join(certDir, '_cert.pem'))
-  const key = readFileSync(join(certDir, '_cert.pem')) // basicSsl uses same file for cert and key
+  const key = readFileSync(join(certDir, '_key.pem'))
 
   server = createHttpsServer({ cert, key }, app)
   console.log('🔒 HTTPS server will be created')

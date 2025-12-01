@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "nodemon src/index.js",
     "start": "node src/index.js",
+    "build": "echo Backend uses ES modules - no build step required",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
