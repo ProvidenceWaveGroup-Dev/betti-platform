@@ -1,10 +1,13 @@
-const MobileNav = ({ activeScreen, onNavigate, onShowMore }) => {
+const MobileNav = ({ activeScreen, onNavigate }) => {
   const navItems = [
     { id: 'dashboard', icon: '🏠', label: 'Home' },
     { id: 'health', icon: '❤️', label: 'Health' },
     { id: 'schedule', icon: '📅', label: 'Schedule' },
     { id: 'medication', icon: '💊', label: 'Meds' },
-    { id: 'more', icon: '⋯', label: 'More' }
+    { id: 'nutrition', icon: '🍎', label: 'Nutrition' },
+    { id: 'fitness', icon: '🏃', label: 'Fitness' },
+    { id: 'hydration', icon: '💧', label: 'Hydration' },
+    { id: 'video', icon: '📞', label: 'Video' }
   ]
 
   const handleClick = (itemId) => {
@@ -12,12 +15,7 @@ const MobileNav = ({ activeScreen, onNavigate, onShowMore }) => {
     if (navigator.vibrate) {
       navigator.vibrate(10)
     }
-
-    if (itemId === 'more') {
-      onShowMore()
-    } else {
-      onNavigate(itemId)
-    }
+    onNavigate(itemId)
   }
 
   return (
@@ -33,60 +31,83 @@ const MobileNav = ({ activeScreen, onNavigate, onShowMore }) => {
         paddingBottom: 'calc(12px + env(safe-area-inset-bottom))',
         background: 'rgba(26, 26, 26, 0.95)',
         backdropFilter: 'blur(10px)',
-        display: 'flex',
-        justifyContent: 'space-around',
-        alignItems: 'center',
         borderTop: '1px solid rgba(255, 255, 255, 0.1)',
         zIndex: 1000,
         boxSizing: 'border-box',
-        overflow: 'hidden'
+        overflowX: 'auto',
+        overflowY: 'hidden',
+        scrollbarWidth: 'none', // Firefox
+        msOverflowStyle: 'none', // IE/Edge
+        WebkitOverflowScrolling: 'touch' // iOS smooth scrolling
       }}
     >
-      {navItems.map(item => (
-        <button
-          key={item.id}
-          className={`nav-item ${activeScreen === item.id ? 'active' : ''}`}
-          onClick={() => handleClick(item.id)}
-          aria-label={item.label}
-          style={{
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '4px',
-            background: 'none',
-            border: 'none',
-            color: activeScreen === item.id ? '#4a9eff' : 'rgba(255, 255, 255, 0.6)',
-            cursor: 'pointer',
-            padding: '8px 4px',
-            minHeight: '56px',
-            transition: 'all 150ms ease'
-          }}
-        >
-          <span
-            className="nav-icon"
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          minWidth: 'max-content',
+          height: '100%',
+          paddingLeft: '8px',
+          paddingRight: '8px'
+        }}
+      >
+        {navItems.map(item => (
+          <button
+            key={item.id}
+            className={`nav-item ${activeScreen === item.id ? 'active' : ''}`}
+            onClick={() => handleClick(item.id)}
+            aria-label={item.label}
             style={{
-              fontSize: '24px',
-              transform: activeScreen === item.id ? 'scale(1.1)' : 'scale(1)',
-              transition: 'transform 150ms ease'
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '4px',
+              background: 'none',
+              border: 'none',
+              color: activeScreen === item.id ? '#4a9eff' : 'rgba(255, 255, 255, 0.6)',
+              cursor: 'pointer',
+              padding: '8px 12px',
+              minHeight: '56px',
+              minWidth: '72px',
+              flexShrink: 0,
+              transition: 'all 150ms ease'
             }}
           >
-            {item.icon}
-          </span>
-          <span
-            className="nav-label"
-            style={{
-              fontSize: '11px',
-              fontWeight: 500,
-              textAlign: 'center',
-              lineHeight: 1.2
-            }}
-          >
-            {item.label}
-          </span>
-        </button>
-      ))}
+            <span
+              className="nav-icon"
+              style={{
+                fontSize: '24px',
+                transform: activeScreen === item.id ? 'scale(1.1)' : 'scale(1)',
+                transition: 'transform 150ms ease'
+              }}
+            >
+              {item.icon}
+            </span>
+            <span
+              className="nav-label"
+              style={{
+                fontSize: '10px',
+                fontWeight: 500,
+                textAlign: 'center',
+                lineHeight: 1.2,
+                whiteSpace: 'nowrap'
+              }}
+            >
+              {item.label}
+            </span>
+          </button>
+        ))}
+      </div>
+
+      {/* Hide scrollbar with CSS */}
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          .mobile-nav::-webkit-scrollbar {
+            display: none;
+          }
+        `
+      }} />
     </nav>
   )
 }

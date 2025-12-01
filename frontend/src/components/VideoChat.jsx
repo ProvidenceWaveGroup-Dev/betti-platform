@@ -28,9 +28,24 @@ function VideoChat() {
 
   useEffect(() => {
     // Initialize WebSocket connection
-    const VIDEO_SERVER = import.meta.env.VITE_VIDEO_SERVER_URL || `${window.location.hostname}:8080`
+    // When accessed via ngrok or other proxy, use relative path to leverage Vite proxy
+    // Otherwise use direct connection to video server
+    const isProxied = window.location.hostname.includes('ngrok') ||
+                      window.location.hostname.includes('localhost')
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
-    const ws = new WebSocket(`${protocol}//${VIDEO_SERVER}`)
+
+    let wsUrl
+    if (isProxied && !import.meta.env.VITE_VIDEO_SERVER_URL) {
+      // Use Vite proxy - connect to same host with /video path
+      wsUrl = `${protocol}//${window.location.host}/video`
+    } else {
+      // Direct connection to video server
+      const VIDEO_SERVER = import.meta.env.VITE_VIDEO_SERVER_URL || `${window.location.hostname}:8080`
+      wsUrl = `${protocol}//${VIDEO_SERVER}`
+    }
+
+    console.log('Connecting to video server at:', wsUrl)
+    const ws = new WebSocket(wsUrl)
 
     ws.onopen = () => {
       console.log('Connected to signaling server')

@@ -15,9 +15,27 @@ const app = express()
 const PORT = process.env.PORT || 3001
 const HOST = process.env.HOST || '0.0.0.0'
 
-// Middleware - Allow CORS from all origins in development
+// CORS configuration - Allow local dev and ngrok public access
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://localhost:5173',
+  'https://halibut-saved-gannet.ngrok-free.app'
+]
+
 app.use(cors({
-  origin: true, // Allow all origins
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin) return callback(null, true)
+    // Allow all origins in development or if in allowed list
+    if (process.env.NODE_ENV === 'development' || allowedOrigins.includes(origin)) {
+      return callback(null, true)
+    }
+    // Also allow any ngrok URL
+    if (origin.includes('ngrok')) {
+      return callback(null, true)
+    }
+    callback(null, true) // Allow all for now during development
+  },
   credentials: true
 }))
 app.use(express.json())

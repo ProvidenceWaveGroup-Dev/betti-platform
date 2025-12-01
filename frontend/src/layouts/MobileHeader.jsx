@@ -21,8 +21,17 @@ const MobileHeader = () => {
   return (
     <header className="mobile-header">
       <div className="header-left">
-        <span className="time">{formatTime(currentTime)}</span>
-        <span className="weather">{weather.temp}°F {weather.location}</span>
+        <div className="header-logo">
+          <img
+            src="/Betti Logo TM.png"
+            alt="Betti"
+            className="betti-logo-header"
+          />
+        </div>
+        <div className="header-info">
+          <span className="time">{formatTime(currentTime)}</span>
+          <span className="weather">{weather.temp}°F {weather.location}</span>
+        </div>
       </div>
       <button className="hamburger-menu" aria-label="Menu">
         ☰

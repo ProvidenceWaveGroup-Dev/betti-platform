@@ -15,9 +15,10 @@ npm run install:all          # Install all dependencies (root + workspaces)
 
 ### Development
 ```bash
-npm run dev                   # Run frontend, backend, and video chat server concurrently
+npm run dev                   # Run frontend, backend, nutrition server, and video chat server concurrently
 npm run dev:frontend          # Frontend only (http://localhost:5173)
 npm run dev:backend           # Backend only (http://localhost:3001)
+npm run dev:nutrition         # Nutrition server only
 npm run dev:video             # Video chat server only (port 8080)
 ```
 
@@ -37,19 +38,21 @@ npm run start:backend         # Start backend in production mode
 ## Architecture
 
 ### Workspace Structure
-This is an npm workspaces monorepo with three main components:
-- `frontend/` - React application built with Vite
-- `backend/` - Express API server with WebSocket support
-- `backend/videochat-server/` - WebRTC signaling server for video chat functionality
+This is an npm workspaces monorepo with a 4-server architecture:
+- `frontend/` - React application built with Vite (port 5173)
+- `backend/` - Express API server with WebSocket support (port 3001)
+- `backend/src/nutrition-server.js` - Dedicated nutrition API server (port 3002)
+- `backend/videochat-server/` - WebRTC signaling server (port 8080)
 
 ### Frontend (`@betti/frontend`)
 - **Framework**: React 18 with React Router for navigation
 - **Build Tool**: Vite 5
 - **Dev Server**: Port 5173, bound to all interfaces (host: true) for testing on actual hardware
-- **Display Target**: 1920x1080 resolution (13.3" touchscreen)
+- **Display Target**: Desktop: 1920x1080 (13.3" touchscreen), Mobile: Responsive
 - **CSS Variables**: Screen dimensions pre-configured ($screen-width: 1920px, $screen-height: 1080px)
 - **Entry Point**: `frontend/src/main.jsx`
-- **Main App**: `frontend/src/App.jsx` - Dynamic component layout with panel state management supporting Header, Appointments, Vitals, BLEDevices, and VideoChat components. Features collapsible panels and video-dominant layout mode
+- **Main App**: `frontend/src/App.jsx` - Dynamic component layout with automatic device detection, supporting both desktop panel-based layout and mobile screen-based layout
+- **PWA Support**: Service worker registration for offline capabilities (production only)
 
 ### Backend (`@betti/backend`)
 - **Framework**: Express 4
@@ -73,6 +76,8 @@ This is an npm workspaces monorepo with three main components:
   - `/api/health` - Health check with WebSocket client count
   - `/api/ble/scan` (POST) - Start BLE device scanning
   - `/api/ble/status` (GET) - Get current scanning status
+  - `/api/nutrition/*` - Nutrition tracking endpoints (meals, foods database)
+- **Nutrition Server**: Separate nutrition server (`backend/src/nutrition-server.js`) on port 3002 handles nutrition-specific functionality
 - **WebSocket**: Real-time bidirectional communication for sensor data updates
   - WebSocket server runs on same port as HTTP server (3001)
   - Frontend connects via `ws://${window.location.hostname}:3001`
@@ -132,12 +137,32 @@ The project recently transitioned from using `bluetoothctl` command-line interfa
 ### Development Data
 - `frontend/src/data/appointments.json` - Static appointment data for development
 - `frontend/src/data/vitals.json` - Static vital signs data for development
+- `backend/src/data/meals.json` - Nutrition meal tracking data
+- `backend/src/data/nutrition.json` - Nutrition goals and targets
+- `backend/src/data/foods-database.json` - Foods database for nutrition calculations
 
-### Video Chat Integration
-The app features a sophisticated panel state management system in `frontend/src/App.jsx`:
-- **Panel States**: `expanded`, `collapsed`, `hidden` for health, appointments, sensors, and video panels
-- **Video-Dominant Layout**: When video chat is active, the layout switches to a video-dominant mode with sidebar components
-- **Dynamic Layouts**: Automatic panel state management when switching between normal and video modes
+### Health & Fitness Tracking Integration
+The app features comprehensive health and fitness tracking with multiple interactive components:
+- **Nutrition Tracking**: `frontend/src/components/Nutrition.jsx` - Calorie counting, meal logging, and nutrition goals
+- **Fitness Tracking**: `frontend/src/components/Fitness.jsx` - Workout logging, exercise tracking with video integration
+- **Hydration Tracking**: `frontend/src/components/Hydration.jsx` - Daily water intake monitoring
+- **Medication Tracking**: `frontend/src/components/Medication.jsx` - Daily medication checklist
+- **Modal Components**: Multiple detail modals for nutrition, fitness, and meal logging with rich UIs
+
+### Mobile UI Architecture
+The app features responsive device detection with separate layouts:
+- **Device Detection**: `frontend/src/utils/deviceDetection.js` - Detects mobile devices via user agent, touch capability, and screen size
+- **Mobile Layout**: `frontend/src/layouts/MobileLayout.jsx` - Container layout with header and bottom navigation
+- **Mobile Screens**: `frontend/src/screens/Mobile*.jsx` - Full-screen views for each feature (Dashboard, Health, Nutrition, Fitness, Hydration, Medication, Schedule, Video)
+- **Mobile Styles**: `frontend/src/styles/mobile*.scss` - Mobile-specific styling per screen
+- **Force Mobile Mode**: URL parameter `?mobile=true` forces mobile layout for testing
+
+### Desktop Panel System
+The desktop layout uses a sophisticated panel state management system in `frontend/src/App.jsx`:
+- **Panel States**: `collapsed`, `visible`, `hidden` for health, appointments, sensors, video, and all health tracking panels
+- **Single Panel Layout**: One maximized panel (2/3 width) with collapsed sidebar panels
+- **Overview Layout**: All panels shown as clickable tiles when no panel is maximized
+- **Dynamic Layouts**: Automatic panel state management when switching between views
 
 ## Development Notes
 

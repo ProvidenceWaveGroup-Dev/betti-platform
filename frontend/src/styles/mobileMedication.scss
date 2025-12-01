@@ -1,0 +1,303 @@
+.mobile-medication {
+  padding: 20px;
+  color: white;
+
+  h2 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--text-light, white);
+  }
+
+  h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--text-light, white);
+  }
+}
+
+.medication-overview {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(74, 158, 255, 0.1));
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 24px;
+
+  .progress-stats {
+    margin-bottom: 16px;
+
+    .completion-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+
+      .completion-text {
+        font-size: 16px;
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      .completion-percentage {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--accent-green, #22c55e);
+      }
+    }
+
+    .progress-bar-container {
+      .progress-bar {
+        width: 100%;
+        height: 8px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+        overflow: hidden;
+
+        .progress-fill {
+          height: 100%;
+          border-radius: 4px;
+          transition: width 0.3s ease, background-color 0.3s ease;
+        }
+      }
+    }
+  }
+
+  .completion-message {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: rgba(34, 197, 94, 0.2);
+    border: 1px solid rgba(34, 197, 94, 0.4);
+    border-radius: 12px;
+    color: var(--accent-green, #22c55e);
+    font-weight: 600;
+
+    .completion-icon {
+      font-size: 20px;
+    }
+  }
+}
+
+.next-medication-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 24px;
+
+  .next-med-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+
+    .next-med-label {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.6);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 500;
+    }
+
+    .next-med-time {
+      font-size: 14px;
+      color: var(--accent-green, #22c55e);
+      font-weight: 600;
+    }
+  }
+
+  .next-med-details {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .next-med-icon {
+      font-size: 32px;
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .next-med-info {
+      flex: 1;
+
+      .next-med-name {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--text-light, white);
+        margin-bottom: 2px;
+      }
+
+      .next-med-type {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.6);
+        text-transform: capitalize;
+      }
+    }
+
+    .quick-take-btn {
+      background: var(--accent-green, #22c55e);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: #16a34a;
+        transform: translateY(-1px);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+    }
+  }
+}
+
+.medications-list {
+  .medication-item {
+    display: flex;
+    gap: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+
+    &.completed {
+      background: rgba(34, 197, 94, 0.1);
+      border-color: rgba(34, 197, 94, 0.3);
+      opacity: 0.8;
+
+      .med-content .med-header .med-name {
+        text-decoration: line-through;
+        opacity: 0.7;
+      }
+    }
+
+    &.overdue {
+      background: rgba(239, 68, 68, 0.1);
+      border-color: rgba(239, 68, 68, 0.3);
+    }
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+  }
+
+  .med-time-badge {
+    display: flex;
+    align-items: center;
+    min-width: 70px;
+
+    .med-time {
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.8);
+      text-align: center;
+      padding: 6px 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      white-space: nowrap;
+    }
+  }
+
+  .med-content {
+    flex: 1;
+    min-width: 0;
+
+    .med-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 4px;
+
+      .med-icon {
+        font-size: 24px;
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .med-info {
+        flex: 1;
+        min-width: 0;
+
+        .med-name {
+          font-size: 16px;
+          font-weight: 600;
+          color: var(--text-light, white);
+          margin-bottom: 2px;
+          line-height: 1.3;
+        }
+
+        .med-type {
+          font-size: 12px;
+          color: rgba(255, 255, 255, 0.6);
+          text-transform: capitalize;
+        }
+      }
+    }
+
+    .overdue-warning {
+      font-size: 12px;
+      color: #ef4444;
+      font-weight: 600;
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+  }
+
+  .med-toggle-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 22px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    &.taken {
+      background: var(--accent-green, #22c55e);
+      border-color: var(--accent-green, #22c55e);
+      color: white;
+    }
+
+    &:hover {
+      border-color: rgba(255, 255, 255, 0.5);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    &.taken:hover {
+      background: #16a34a;
+      border-color: #16a34a;
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+}

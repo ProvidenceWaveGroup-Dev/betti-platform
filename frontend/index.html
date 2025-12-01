@@ -4,10 +4,84 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <meta name="description" content="Betti Smart Mirror Hub" />
+    <meta name="theme-color" content="#4a9eff" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Betti Mobile" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
     <title>Betti Smart Mirror</title>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Loading state shown before React loads -->
+      <div id="initial-loader" style="
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        background: #0a0a0a;
+        color: white;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      ">
+        <div style="font-size: 48px; margin-bottom: 20px;">🏠</div>
+        <div style="font-size: 24px; font-weight: bold; margin-bottom: 10px;">Betti</div>
+        <div style="font-size: 14px; color: #888;">Loading...</div>
+      </div>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
+
+    <!-- Mobile Debug Console -->
+    <script>
+      (function() {
+        // Create debug overlay
+        var debugDiv = document.createElement('div');
+        debugDiv.id = 'mobile-debug';
+        debugDiv.style.cssText = 'position:fixed;bottom:0;left:0;right:0;max-height:40vh;overflow-y:auto;background:rgba(0,0,0,0.9);color:#0f0;font-family:monospace;font-size:11px;padding:10px;z-index:99999;display:none;';
+        document.body.appendChild(debugDiv);
+
+        // Toggle button
+        var toggleBtn = document.createElement('button');
+        toggleBtn.innerHTML = '🐛';
+        toggleBtn.style.cssText = 'position:fixed;bottom:10px;right:10px;width:40px;height:40px;border-radius:50%;background:#333;color:white;border:none;font-size:20px;z-index:100000;';
+        toggleBtn.onclick = function() {
+          debugDiv.style.display = debugDiv.style.display === 'none' ? 'block' : 'none';
+        };
+        document.body.appendChild(toggleBtn);
+
+        var logs = [];
+        function addLog(type, args) {
+          var msg = '[' + type + '] ' + Array.from(args).map(function(a) {
+            try { return typeof a === 'object' ? JSON.stringify(a) : String(a); }
+            catch(e) { return String(a); }
+          }).join(' ');
+          logs.push(msg);
+          if (logs.length > 50) logs.shift();
+          debugDiv.innerHTML = logs.map(function(l) {
+            var color = l.includes('[ERROR]') ? '#f00' : l.includes('[WARN]') ? '#ff0' : '#0f0';
+            return '<div style="color:' + color + ';border-bottom:1px solid #333;padding:4px 0;">' + l + '</div>';
+          }).join('');
+          debugDiv.scrollTop = debugDiv.scrollHeight;
+        }
+
+        // Capture console
+        var origLog = console.log, origError = console.error, origWarn = console.warn;
+        console.log = function() { origLog.apply(console, arguments); addLog('LOG', arguments); };
+        console.error = function() { origError.apply(console, arguments); addLog('ERROR', arguments); };
+        console.warn = function() { origWarn.apply(console, arguments); addLog('WARN', arguments); };
+
+        // Capture errors
+        window.onerror = function(msg, url, line, col, error) {
+          addLog('ERROR', [msg, 'at', url, ':', line, ':', col]);
+        };
+        window.onunhandledrejection = function(e) {
+          addLog('ERROR', ['Unhandled Promise:', e.reason]);
+        };
+
+        console.log('Debug console ready. URL:', location.href);
+        console.log('User Agent:', navigator.userAgent.substring(0, 80));
+      })();
+    </script>
   </body>
 </html>

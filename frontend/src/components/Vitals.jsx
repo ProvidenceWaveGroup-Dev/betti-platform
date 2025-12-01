@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import './Vitals.css'
+import ProgressBar, { HealthProgressBar } from './ProgressBar'
 
 function Vitals({ isCollapsed = false }) {
   // Use the exact data from your design image
@@ -18,6 +19,7 @@ function Vitals({ isCollapsed = false }) {
     status: 'Stable',
     updated: '1 hour ago'
   })
+
 
   if (isCollapsed) {
     return (

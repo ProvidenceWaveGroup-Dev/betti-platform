@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Betti Mobile Test Page</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #ff6600, #ff0000);
+            color: white;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        .section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .info-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 8px;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .button {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            margin: 5px;
+            cursor: pointer;
+            display: block;
+            width: calc(100% - 10px);
+            text-align: center;
+            text-decoration: none;
+        }
+        .button:hover, .button:active {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        pre {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 12px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">🏥 Betti Mobile Test Page</div>
+
+        <div class="section">
+            <h3>✅ SUCCESS: This page loaded successfully!</h3>
+            <p>If you can see this, the server is working and your device can connect.</p>
+            <p><strong>Time:</strong> <span id="current-time"></span></p>
+        </div>
+
+        <div class="section">
+            <h3>📱 Device Information</h3>
+            <div class="info-grid">
+                <div class="info-item">
+                    <strong>Screen Size</strong><br>
+                    <span id="screen-size">Loading...</span>
+                </div>
+                <div class="info-item">
+                    <strong>Window Size</strong><br>
+                    <span id="window-size">Loading...</span>
+                </div>
+                <div class="info-item">
+                    <strong>Device Pixel Ratio</strong><br>
+                    <span id="pixel-ratio">Loading...</span>
+                </div>
+                <div class="info-item">
+                    <strong>Touch Support</strong><br>
+                    <span id="touch-support">Loading...</span>
+                </div>
+            </div>
+            <div style="margin-top: 15px;">
+                <strong>User Agent:</strong>
+                <pre id="user-agent">Loading...</pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>🔍 Device Detection Test</h3>
+            <div id="detection-results">
+                <p>Running device detection...</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>🧪 Navigation Tests</h3>
+            <a href="/" class="button">🏠 Go to Main App</a>
+            <button class="button" onclick="forceDesktop()">🖥️ Force Desktop Mode</button>
+            <button class="button" onclick="forceMobile()">📱 Force Mobile Mode</button>
+            <button class="button" onclick="clearForce()">🔄 Clear Forced Mode</button>
+        </div>
+
+        <div class="section">
+            <h3>📋 Debug Information</h3>
+            <pre id="debug-info">Collecting debug information...</pre>
+        </div>
+    </div>
+
+    <script>
+        // Update time
+        function updateTime() {
+            document.getElementById('current-time').textContent = new Date().toLocaleString();
+        }
+        updateTime();
+        setInterval(updateTime, 1000);
+
+        // Collect device info
+        function collectDeviceInfo() {
+            // Basic device info
+            document.getElementById('screen-size').textContent = `${screen.width}x${screen.height}`;
+            document.getElementById('window-size').textContent = `${window.innerWidth}x${window.innerHeight}`;
+            document.getElementById('pixel-ratio').textContent = window.devicePixelRatio || 1;
+            document.getElementById('touch-support').textContent = ('ontouchstart' in window || navigator.maxTouchPoints > 0) ? 'Yes' : 'No';
+            document.getElementById('user-agent').textContent = navigator.userAgent;
+
+            // Device detection (simplified version)
+            const userAgent = navigator.userAgent;
+            const isPixel = /Pixel/i.test(userAgent);
+            const isAndroid = /Android/i.test(userAgent);
+            const isIOS = /iPhone|iPad|iPod/i.test(userAgent);
+            const isMobile = /Mobile|Android|iPhone|iPad|iPod|BlackBerry|Windows Phone/i.test(userAgent);
+
+            const detection = {
+                isPixel: isPixel,
+                isAndroid: isAndroid,
+                isIOS: isIOS,
+                isMobile: isMobile,
+                touchSupport: 'ontouchstart' in window,
+                effectiveWidth: Math.max(screen.width / (window.devicePixelRatio || 1), window.innerWidth)
+            };
+
+            document.getElementById('detection-results').innerHTML = `
+                <div class="info-grid">
+                    <div class="info-item">
+                        <strong>Pixel Device</strong><br>
+                        ${detection.isPixel ? '✅ Yes' : '❌ No'}
+                    </div>
+                    <div class="info-item">
+                        <strong>Android</strong><br>
+                        ${detection.isAndroid ? '✅ Yes' : '❌ No'}
+                    </div>
+                    <div class="info-item">
+                        <strong>iOS</strong><br>
+                        ${detection.isIOS ? '✅ Yes' : '❌ No'}
+                    </div>
+                    <div class="info-item">
+                        <strong>Mobile UA</strong><br>
+                        ${detection.isMobile ? '✅ Yes' : '❌ No'}
+                    </div>
+                </div>
+                <p><strong>Recommendation:</strong> ${detection.isMobile ? '📱 Should show mobile layout' : '🖥️ Should show desktop layout'}</p>
+            `;
+
+            // Comprehensive debug info
+            const debugInfo = {
+                timestamp: new Date().toISOString(),
+                location: window.location.href,
+                userAgent: userAgent,
+                platform: navigator.platform,
+                language: navigator.language,
+                cookieEnabled: navigator.cookieEnabled,
+                onLine: navigator.onLine,
+                screen: {
+                    width: screen.width,
+                    height: screen.height,
+                    availWidth: screen.availWidth,
+                    availHeight: screen.availHeight,
+                    colorDepth: screen.colorDepth
+                },
+                window: {
+                    innerWidth: window.innerWidth,
+                    innerHeight: window.innerHeight,
+                    outerWidth: window.outerWidth,
+                    outerHeight: window.outerHeight,
+                    devicePixelRatio: window.devicePixelRatio
+                },
+                localStorage: typeof Storage !== 'undefined',
+                forceMode: localStorage.getItem('betti_force_mobile'),
+                detection: detection
+            };
+
+            document.getElementById('debug-info').textContent = JSON.stringify(debugInfo, null, 2);
+        }
+
+        // Force mode functions
+        function forceDesktop() {
+            localStorage.removeItem('betti_force_mobile');
+            alert('Desktop mode will be forced. Redirecting to main app...');
+            window.location.href = '/';
+        }
+
+        function forceMobile() {
+            localStorage.setItem('betti_force_mobile', 'true');
+            alert('Mobile mode will be forced. Redirecting to main app...');
+            window.location.href = '/';
+        }
+
+        function clearForce() {
+            localStorage.removeItem('betti_force_mobile');
+            alert('Forced mode cleared. Redirecting to main app...');
+            window.location.href = '/';
+        }
+
+        // Initialize
+        collectDeviceInfo();
+
+        // Update on resize
+        window.addEventListener('resize', collectDeviceInfo);
+    </script>
+</body>
+</html>

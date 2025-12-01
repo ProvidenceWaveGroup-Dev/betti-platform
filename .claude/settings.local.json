@@ -30,7 +30,20 @@
       "Bash(git branch:*)",
       "Bash(git reset:*)",
       "Bash(tasklist)",
-      "Bash(npx vite:*)"
+      "Bash(npx vite:*)",
+      "Bash(node:*)",
+      "Bash(ipconfig)",
+      "Bash(timeout /t 15 /nobreak)",
+      "Bash(ngrok http:*)",
+      "Bash(start /B ngrok.exe http --url=halibut-saved-gannet.ngrok-free.app 5173)",
+      "Bash(cmd /c \"taskkill /F /IM node.exe\")",
+      "Bash(powershell:*)",
+      "Bash(timeout /t 8 /nobreak)",
+      "Bash(where:*)",
+      "Bash(cd:*)",
+      "Bash(NGROK_MODE=true npm run dev:*)",
+      "Bash(npm ls:*)",
+      "Bash(npm:*)"
     ],
     "deny": [],
     "ask": []

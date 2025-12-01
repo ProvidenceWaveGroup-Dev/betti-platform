@@ -1,37 +1,29 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import basicSsl from '@vitejs/plugin-basic-ssl'
 
-// Check if running in ngrok mode (no SSL needed - ngrok provides it)
-const isNgrokMode = process.env.NGROK_MODE === 'true'
-
-// https://vitejs.dev/config/
+// Ngrok-specific config - NO SSL (ngrok provides HTTPS)
 export default defineConfig({
-  plugins: isNgrokMode ? [react()] : [react(), basicSsl()],
+  plugins: [react()],
   server: {
     port: 5173,
     host: true,
     strictPort: true,
     allowedHosts: ['halibut-saved-gannet.ngrok-free.app'],
-    // Add headers to help with ngrok
-    headers: {
-      'ngrok-skip-browser-warning': 'true'
-    },
-    // Proxy configuration for ngrok and local development
+    // Proxy configuration for ngrok
     proxy: {
-      // Main backend API
+      // Main backend API (backend uses HTTPS)
       '/api': {
-        target: 'http://localhost:3001',
+        target: 'https://localhost:3001',
         changeOrigin: true,
         secure: false,
-        ws: true // WebSocket support for real-time updates
+        ws: true
       },
-      // Video chat WebSocket signaling
+      // Video chat WebSocket signaling (HTTP for ngrok mode)
       '/video': {
         target: 'http://localhost:8080',
         changeOrigin: true,
         secure: false,
-        ws: true, // Critical for WebRTC signaling
+        ws: true,
         rewrite: (path) => path.replace(/^\/video/, '')
       }
     }
@@ -40,7 +32,6 @@ export default defineConfig({
     outDir: 'dist',
     sourcemap: false
   },
-  // Optimized for 13.3" touchscreen (1920x1080)
   css: {
     preprocessorOptions: {
       scss: {
