@@ -8,8 +8,12 @@ import { join } from 'path'
 import dotenv from 'dotenv'
 import bleRoutes from './routes/ble.js'
 import vitalsRoutes from './routes/vitals.js'
+import fitnessRoutes from './routes/fitness.js'
+import medicationsRoutes from './routes/medications.js'
 import bleScanner from './services/bleScanner.js'
 import bleHealthProcessor from './services/bleHealthProcessor.js'
+import bleFitnessProcessor from './services/bleFitnessProcessor.js'
+import medicationReminder from './services/medicationReminder.js'
 import database from './services/database.js'
 
 dotenv.config()
@@ -151,10 +155,56 @@ bleHealthProcessor.on('error', (error) => {
   })
 })
 
+// Listen for BLE Fitness Processor events and broadcast activity updates
+bleFitnessProcessor.on('activityUpdated', (data) => {
+  broadcast({
+    type: 'activity-update',
+    userId: data.userId,
+    date: data.date,
+    activity: data.activity,
+    deviceAddress: data.deviceAddress,
+    source: data.source,
+    timestamp: new Date().toISOString()
+  })
+})
+
+bleFitnessProcessor.on('error', (error) => {
+  broadcast({
+    type: 'activity-error',
+    errorType: error.type,
+    deviceAddress: error.deviceAddress,
+    error: error.error
+  })
+})
+
+// Listen for Medication Reminder events and broadcast them
+medicationReminder.on('medication-reminder', (data) => {
+  broadcast(data)
+})
+
+medicationReminder.on('medication-due', (data) => {
+  broadcast(data)
+})
+
+medicationReminder.on('medication-late', (data) => {
+  broadcast(data)
+})
+
+medicationReminder.on('error', (error) => {
+  broadcast({
+    type: 'medication-error',
+    error: error.error
+  })
+})
+
+// Start medication reminder service
+medicationReminder.start()
 
 // Routes
 app.use('/api/ble', bleRoutes)
 app.use('/api/vitals', vitalsRoutes)
+app.use('/api/fitness', fitnessRoutes)
+app.use('/api/medications', medicationsRoutes)
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
@@ -191,6 +241,9 @@ function shutdown(signal) {
 
     // Cleanup BLE health processor
     bleHealthProcessor.destroy()
+
+    // Cleanup medication reminder service
+    medicationReminder.destroy()
 
     // Close database connection
     database.close()
