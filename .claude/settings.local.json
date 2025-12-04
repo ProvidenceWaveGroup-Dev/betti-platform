@@ -53,7 +53,8 @@
       "Bash(python:*)",
       "Bash(set VIDEO_PORT=8080)",
       "Bash(cat:*)",
-      "Bash(sqlite3:*)"
+      "Bash(sqlite3:*)",
+      "Bash(git stash:*)"
     ],
     "deny": [],
     "ask": []

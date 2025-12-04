@@ -133,28 +133,48 @@ class BLEConnectionManager extends EventEmitter {
       })
 
       // Get peripheral from scanner cache
-      const peripheral = bleScanner.getPeripheralByMac(macAddress)
+      let peripheral = bleScanner.getPeripheralByMac(macAddress)
       if (!peripheral) {
-        throw new Error('Device not in range (not found in scanner cache)')
+        console.log(`[BLEConnectionManager] ${name} not in scanner cache, triggering scan...`)
+
+        // Trigger a scan to discover the device
+        const scanResult = await bleScanner.startScan()
+        if (!scanResult.success) {
+          throw new Error(`Cannot scan for device: ${scanResult.message}`)
+        }
+
+        // Wait for scan to complete (30 seconds)
+        await new Promise(resolve => setTimeout(resolve, 31000))
+
+        // Try to get peripheral again
+        peripheral = bleScanner.getPeripheralByMac(macAddress)
+        if (!peripheral) {
+          throw new Error('Device not in range (not found after scan)')
+        }
       }
 
-      // Connect to peripheral
-      await new Promise((resolve, reject) => {
-        const timeout = setTimeout(() => {
-          reject(new Error('Connection timeout'))
-        }, 10000) // 10 second timeout
+      // Check if already connected
+      if (peripheral.state === 'connected') {
+        console.log(`[BLEConnectionManager] ${name} already connected, using existing connection`)
+      } else {
+        // Connect to peripheral
+        await new Promise((resolve, reject) => {
+          const timeout = setTimeout(() => {
+            reject(new Error('Connection timeout'))
+          }, 10000) // 10 second timeout
 
-        peripheral.connect((error) => {
-          clearTimeout(timeout)
-          if (error) {
-            reject(error)
-          } else {
-            resolve()
-          }
+          peripheral.connect((error) => {
+            clearTimeout(timeout)
+            if (error) {
+              reject(error)
+            } else {
+              resolve()
+            }
+          })
         })
-      })
 
-      console.log(`[BLEConnectionManager] Connected to ${name}`)
+        console.log(`[BLEConnectionManager] Connected to ${name}`)
+      }
 
       // Discover services and characteristics
       await this.discoverServices(peripheral, macAddress, name)

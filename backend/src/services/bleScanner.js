@@ -54,9 +54,10 @@ class BLEScanner extends EventEmitter {
       manufacturer: null // Noble might provide this, but for now keep it null
     }
 
-    // Cache peripheral object for connection (key = normalized uppercase MAC address)
+    // Cache peripheral object for connection (key = uppercase MAC WITHOUT separators)
     if (peripheral) {
-      this.discoveredPeripherals.set(normalizedAddress, peripheral)
+      const cacheKey = normalizedAddress.replace(/[:-]/g, '') // Remove separators
+      this.discoveredPeripherals.set(cacheKey, peripheral)
     }
 
     // Check if device is new or needs updating
@@ -161,7 +162,8 @@ class BLEScanner extends EventEmitter {
    * Required for noble.connect() calls in bleConnectionManager
    */
   getPeripheralByMac(macAddress) {
-    const normalizedAddress = macAddress.toUpperCase()
+    // Normalize to uppercase without separators to match cache key format
+    const normalizedAddress = macAddress.toUpperCase().replace(/[:-]/g, '')
     return this.discoveredPeripherals.get(normalizedAddress) || null
   }
 
