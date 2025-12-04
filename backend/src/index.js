@@ -14,10 +14,12 @@ import appointmentsRoutes from './routes/appointments.js'
 import hydrationRoutes from './routes/hydration.js'
 import nutritionRoutes from './routes/nutrition.js'
 import bleScanner from './services/bleScanner.js'
+import bleConnectionManager from './services/bleConnectionManager.js'
 import bleHealthProcessor from './services/bleHealthProcessor.js'
 import bleFitnessProcessor from './services/bleFitnessProcessor.js'
 import medicationReminder from './services/medicationReminder.js'
 import database from './services/database.js'
+import BleDevicesRepo from './repos/BleDevicesRepo.js'
 
 dotenv.config()
 
@@ -27,6 +29,20 @@ try {
 } catch (error) {
   console.error('❌ Failed to initialize database:', error.message)
   process.exit(1)
+}
+
+// Check for paired BLE devices and start connection manager if found
+try {
+  const pairedDevices = BleDevicesRepo.findPaired()
+  if (pairedDevices.length > 0) {
+    console.log(`🔵 Found ${pairedDevices.length} paired BLE device(s)`)
+    pairedDevices.forEach(device => {
+      console.log(`   - ${device.name} (${device.macAddress})`)
+    })
+    bleConnectionManager.start()
+  }
+} catch (error) {
+  console.error('⚠️ Error checking paired devices:', error.message)
 }
 
 const app = express()
@@ -136,6 +152,29 @@ bleScanner.on('bleScanStatus', (status) => {
     error: status.error,
     devicesFound: status.devicesFound
   })
+})
+
+// Listen for BLE Connection Manager events and broadcast connection status
+bleConnectionManager.on('connection-status', (data) => {
+  broadcast({
+    type: 'ble-connection-status',
+    macAddress: data.macAddress,
+    name: data.name,
+    status: data.status
+  })
+})
+
+bleConnectionManager.on('connection-error', (data) => {
+  broadcast({
+    type: 'ble-connection-error',
+    macAddress: data.macAddress,
+    name: data.name,
+    error: data.error
+  })
+})
+
+bleConnectionManager.on('bp-data-received', (data) => {
+  console.log(`[Backend] BP data received from ${data.name}: ${data.systolic}/${data.diastolic}`)
 })
 
 // Listen for BLE Health Processor events and broadcast vitals updates
@@ -249,6 +288,9 @@ function shutdown(signal) {
   // Close the HTTP/HTTPS server
   server.close(() => {
     console.log('🔌 HTTP server closed')
+
+    // Stop BLE connection manager
+    bleConnectionManager.stop()
 
     // Cleanup BLE health processor
     bleHealthProcessor.destroy()

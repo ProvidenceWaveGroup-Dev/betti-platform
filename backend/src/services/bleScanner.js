@@ -8,6 +8,7 @@ class BLEScanner extends EventEmitter {
     this.isScanning = false
     this.scanTimeout = null
     this.discoveredDevices = new Map()
+    this.discoveredPeripherals = new Map() // Cache peripheral objects for connection (MAC -> peripheral)
     this.scanDuration = 30000 // 30 seconds
     this.bluetoothState = 'unknown'
 
@@ -34,11 +35,11 @@ class BLEScanner extends EventEmitter {
       const name = peripheral.advertisement.localName || peripheral.address
       const rssi = peripheral.rssi
 
-      this.handleDeviceDiscovery(address, name, rssi)
+      this.handleDeviceDiscovery(address, name, rssi, peripheral)
     })
   }
 
-  handleDeviceDiscovery(address, name, rssi) {
+  handleDeviceDiscovery(address, name, rssi, peripheral = null) {
     console.log(`[BLEScanner] Handling device discovery: ${name} (${address})`);
     // Normalize MAC address format
     const normalizedAddress = address.toUpperCase()
@@ -51,6 +52,11 @@ class BLEScanner extends EventEmitter {
       rssi: rssi || 0,
       lastSeen: new Date().toISOString(),
       manufacturer: null // Noble might provide this, but for now keep it null
+    }
+
+    // Cache peripheral object for connection (key = normalized uppercase MAC address)
+    if (peripheral) {
+      this.discoveredPeripherals.set(normalizedAddress, peripheral)
     }
 
     // Check if device is new or needs updating
@@ -148,6 +154,15 @@ class BLEScanner extends EventEmitter {
       console.error('[BLEScanner] Error stopping BLE scan:', error)
       this.isScanning = false
     }
+  }
+
+  /**
+   * Get cached peripheral object by MAC address
+   * Required for noble.connect() calls in bleConnectionManager
+   */
+  getPeripheralByMac(macAddress) {
+    const normalizedAddress = macAddress.toUpperCase()
+    return this.discoveredPeripherals.get(normalizedAddress) || null
   }
 
   getStatus() {
