@@ -31,7 +31,7 @@ class BLEConnectionManager extends EventEmitter {
     this.pollingIntervalMs = 15000 // 15 seconds
     this.connectedPeripherals = new Map() // MAC -> { peripheral, characteristics, name }
     this.connectionAttempts = new Map() // MAC -> retry count
-    this.maxReconnectAttempts = 20
+    this.maxReconnectAttempts = 999 // Effectively unlimited for devices that advertise on-demand
 
     console.log('[BLEConnectionManager] Initialized')
   }
@@ -151,6 +151,14 @@ class BLEConnectionManager extends EventEmitter {
         if (!peripheral) {
           throw new Error('Device not in range (not found after scan)')
         }
+
+        // Device was discovered! Reset connection attempts
+        console.log(`[BLEConnectionManager] ${name} discovered in scan, resetting connection attempts`)
+        this.connectionAttempts.delete(macAddress)
+      } else {
+        // Device already in cache, reset attempts since it's available
+        console.log(`[BLEConnectionManager] ${name} found in cache, resetting connection attempts`)
+        this.connectionAttempts.delete(macAddress)
       }
 
       // Check if already connected
