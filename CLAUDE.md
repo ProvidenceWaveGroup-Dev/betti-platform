@@ -6,6 +6,20 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Betti Smart Mirror Hub is a full-stack IoT application designed for a 13.3" touchscreen display (1920x1080). The project uses npm workspaces to manage a React frontend and Node.js backend.
 
+## Quick Start / Stop (Windows)
+
+### Starting Betti
+```batch
+start-betti.bat               # Start all services (local development)
+start-betti-ngrok.bat         # Start with ngrok for external access
+```
+
+### Stopping Betti
+```batch
+kill-betti.bat                # Kill all Node.js processes (stops everything)
+```
+Or press `Ctrl+C` in the terminal running Betti.
+
 ## Development Commands
 
 ### Setup
@@ -15,10 +29,9 @@ npm run install:all          # Install all dependencies (root + workspaces)
 
 ### Development
 ```bash
-npm run dev                   # Run frontend, backend, nutrition server, and video chat server concurrently
+npm run dev                   # Run frontend, backend, and video chat server concurrently
 npm run dev:frontend          # Frontend only (http://localhost:5173)
 npm run dev:backend           # Backend only (http://localhost:3001)
-npm run dev:nutrition         # Nutrition server only
 npm run dev:video             # Video chat server only (port 8080)
 ```
 
@@ -45,12 +58,13 @@ npm run pm2:monit             # Interactive monitoring dashboard
 npm run pm2:status            # Check process status
 ```
 
-### Development with ngrok (external access/testing)
+### External Access with ngrok
 ```bash
 npm run dev:ngrok             # Run all servers with ngrok tunneling
 npm run dev:frontend:ngrok    # Frontend with ngrok only
 npm run dev:video:ngrok       # Video server with ngrok only
 ```
+**Note:** HMR is automatically disabled in ngrok mode to reduce HTTP request overhead. ngrok free tier has a 20,000 requests/month limit.
 
 ## Architecture
 
