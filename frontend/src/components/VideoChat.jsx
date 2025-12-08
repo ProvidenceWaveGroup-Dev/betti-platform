@@ -749,7 +749,7 @@ function VideoChat({ variant = 'desktop', onNavigate }) {
             />
             {!isCallActive && (
               <div className="waiting-message">
-                {connectionStatus === 'disconnected' ? 'Start a call to connect' : 'Waiting for participant...'}
+                {!roomJoined ? 'Start a call to connect' : 'Waiting for participant...'}
               </div>
             )}
           </div>
