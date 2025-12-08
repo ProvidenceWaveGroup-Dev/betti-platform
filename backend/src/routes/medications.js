@@ -123,10 +123,16 @@ router.get('/today', (req, res) => {
     const userId = parseInt(req.query.userId) || DEFAULT_USER_ID
     const schedule = MedicationRepo.getTodaySchedule(userId)
 
+    // Use local date string (not UTC)
+    const today = new Date()
+    const dateStr = today.getFullYear() + '-' +
+      String(today.getMonth() + 1).padStart(2, '0') + '-' +
+      String(today.getDate()).padStart(2, '0')
+
     res.json({
       success: true,
       data: schedule,
-      date: new Date().toISOString().split('T')[0]
+      date: dateStr
     })
   } catch (error) {
     console.error('Error fetching today\'s schedule:', error)
@@ -171,10 +177,16 @@ router.get('/overview', (req, res) => {
     const userId = parseInt(req.query.userId) || DEFAULT_USER_ID
     const overview = MedicationRepo.getOverview(userId)
 
+    // Use local date string (not UTC)
+    const today = new Date()
+    const dateStr = today.getFullYear() + '-' +
+      String(today.getMonth() + 1).padStart(2, '0') + '-' +
+      String(today.getDate()).padStart(2, '0')
+
     res.json({
       success: true,
       data: overview,
-      date: new Date().toISOString().split('T')[0]
+      date: dateStr
     })
   } catch (error) {
     console.error('Error fetching medication overview:', error)

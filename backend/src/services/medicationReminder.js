@@ -17,6 +17,15 @@ const REMINDER_INTERVAL_MS = 60 * 1000 // 1 minute
 const REMINDER_WINDOW_MINUTES = 5 // Remind when within 5 minutes of scheduled time
 const LATE_THRESHOLD_MINUTES = 30 // Mark as late after 30 minutes
 
+/**
+ * Get local date string in YYYY-MM-DD format (uses local timezone, not UTC)
+ */
+function getLocalDateString(date = new Date()) {
+  return date.getFullYear() + '-' +
+    String(date.getMonth() + 1).padStart(2, '0') + '-' +
+    String(date.getDate()).padStart(2, '0')
+}
+
 class MedicationReminderService extends EventEmitter {
   constructor() {
     super()
@@ -85,7 +94,7 @@ class MedicationReminderService extends EventEmitter {
     try {
       const db = getDatabase()
       const now = new Date()
-      const today = now.toISOString().split('T')[0]
+      const today = getLocalDateString(now)
       const currentHour = now.getHours()
       const currentMinute = now.getMinutes()
       const currentTimeMinutes = currentHour * 60 + currentMinute

@@ -10,6 +10,18 @@ const __dirname = dirname(__filename)
 let db = null
 
 /**
+ * Get local date string in YYYY-MM-DD format
+ * Uses local timezone instead of UTC (unlike toISOString())
+ * @param {Date} date - Date object (defaults to now)
+ * @returns {string} Date in YYYY-MM-DD format
+ */
+function getLocalDateString(date = new Date()) {
+  return date.getFullYear() + '-' +
+    String(date.getMonth() + 1).padStart(2, '0') + '-' +
+    String(date.getDate()).padStart(2, '0')
+}
+
+/**
  * Initialize the SQLite database connection
  * Creates the database and runs schema if it doesn't exist
  */
@@ -731,10 +743,12 @@ export const MedicationRepo = {
     this.runMigrations()
 
     const today = new Date()
-    const todayStr = today.toISOString().split('T')[0]
+    // Use local timezone for date string (YYYY-MM-DD format)
+    const todayStr = getLocalDateString(today)
     const dayOfWeek = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'][today.getDay()]
-    const now = new Date()
-    const currentTime = now.toTimeString().slice(0, 5)
+    const currentTime = today.toTimeString().slice(0, 5)
+
+    console.log(`[MedicationRepo] getTodaySchedule - Today: ${todayStr}, Day: ${dayOfWeek}, Time: ${currentTime}`)
 
     // Get all active medications with their schedules
     const query = `
@@ -876,7 +890,7 @@ export const MedicationRepo = {
    */
   markTaken(medicationId, scheduleId = null, options = {}) {
     const db = getDatabase()
-    const today = new Date().toISOString().split('T')[0]
+    const today = getLocalDateString()
     const now = new Date().toISOString()
     const { dosage_amount, notes } = options
 
@@ -922,7 +936,7 @@ export const MedicationRepo = {
    */
   markSkipped(medicationId, scheduleId = null, reason = null) {
     const db = getDatabase()
-    const today = new Date().toISOString().split('T')[0]
+    const today = getLocalDateString()
 
     let logId
     if (scheduleId) {
@@ -967,7 +981,7 @@ export const MedicationRepo = {
 
     const startDate = new Date()
     startDate.setDate(startDate.getDate() - days)
-    const startDateStr = startDate.toISOString().split('T')[0]
+    const startDateStr = getLocalDateString(startDate)
 
     return db.prepare(`
       SELECT ml.*, ms.schedule_time, ms.dosage_amount
@@ -991,8 +1005,8 @@ export const MedicationRepo = {
 
     const startDate = new Date()
     startDate.setDate(startDate.getDate() - days + 1)
-    const startDateStr = startDate.toISOString().split('T')[0]
-    const endDateStr = new Date().toISOString().split('T')[0]
+    const startDateStr = getLocalDateString(startDate)
+    const endDateStr = getLocalDateString()
 
     // Get all logs for the period (excluding PRN)
     const logs = db.prepare(`
@@ -1016,7 +1030,7 @@ export const MedicationRepo = {
     for (let i = 0; i < days; i++) {
       const d = new Date()
       d.setDate(d.getDate() - i)
-      const dateStr = d.toISOString().split('T')[0]
+      const dateStr = getLocalDateString(d)
       byDay[dateStr] = { taken: 0, skipped: 0, late: 0, pending: 0, total: 0 }
     }
 
