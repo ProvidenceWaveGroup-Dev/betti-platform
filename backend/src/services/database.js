@@ -852,7 +852,7 @@ export const MedicationRepo = {
       if (!row.log_id && row.schedule_time < currentTime) {
         const scheduledMinutes = parseInt(row.schedule_time.split(':')[0]) * 60 +
                                   parseInt(row.schedule_time.split(':')[1])
-        const currentMinutes = now.getHours() * 60 + now.getMinutes()
+        const currentMinutes = today.getHours() * 60 + today.getMinutes()
 
         if (currentMinutes - scheduledMinutes > 30) {
           status = 'late'

@@ -13,10 +13,12 @@ import medicationsRoutes from './routes/medications.js'
 import appointmentsRoutes from './routes/appointments.js'
 import hydrationRoutes from './routes/hydration.js'
 import nutritionRoutes from './routes/nutrition.js'
+import accelerometerRoutes from './routes/accelerometer.js'
 import bleScanner from './services/bleScanner.js'
 import bleConnectionManager from './services/bleConnectionManager.js'
 import bleHealthProcessor from './services/bleHealthProcessor.js'
 import bleFitnessProcessor from './services/bleFitnessProcessor.js'
+import bleHaloProcessor from './services/bleHaloProcessor.js'
 import medicationReminder from './services/medicationReminder.js'
 import database from './services/database.js'
 import BleDevicesRepo from './repos/BleDevicesRepo.js'
@@ -232,6 +234,52 @@ bleFitnessProcessor.on('error', (error) => {
   })
 })
 
+// Listen for Halo Environmental Sensor events and broadcast them
+bleHaloProcessor.on('connection-status', (data) => {
+  broadcast({
+    type: 'halo-connection-status',
+    deviceName: data.deviceName,
+    status: data.status,
+    timestamp: data.timestamp
+  })
+})
+
+bleHaloProcessor.on('sensor-update', (data) => {
+  broadcast({
+    type: 'halo-sensor-update',
+    temperature: data.temperature,
+    temperatureC: data.temperatureC,
+    humidity: data.humidity,
+    light: data.light,
+    imu: data.imu,
+    button: data.button,
+    lastUpdate: data.lastUpdate,
+    deviceName: data.deviceName
+  })
+})
+
+bleHaloProcessor.on('button-press', (data) => {
+  broadcast({
+    type: 'halo-button-press',
+    pressed: data.pressed,
+    timestamp: data.timestamp
+  })
+})
+
+// Start Halo processor when Bluetooth is ready
+bleScanner.once('bleStateChange', (state) => {
+  if (state === 'poweredOn') {
+    console.log('🌡️ Starting Halo environmental sensor processor...')
+    bleHaloProcessor.start()
+  }
+})
+
+// If Bluetooth is already powered on, start Halo processor immediately
+if (bleScanner.bluetoothState === 'poweredOn') {
+  console.log('🌡️ Bluetooth already on, starting Halo processor...')
+  bleHaloProcessor.start()
+}
+
 // Listen for Medication Reminder events and broadcast them
 medicationReminder.on('medication-reminder', (data) => {
   broadcast(data)
@@ -263,6 +311,7 @@ app.use('/api/medications', medicationsRoutes)
 app.use('/api/appointments', appointmentsRoutes)
 app.use('/api/hydration', hydrationRoutes)
 app.use('/api/nutrition', nutritionRoutes)
+app.use('/api/accelerometer', accelerometerRoutes)
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
@@ -307,6 +356,9 @@ function shutdown(signal) {
 
     // Cleanup BLE health processor
     bleHealthProcessor.destroy()
+
+    // Cleanup Halo processor
+    bleHaloProcessor.stop()
 
     // Cleanup medication reminder service
     medicationReminder.destroy()

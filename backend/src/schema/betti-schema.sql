@@ -309,6 +309,28 @@ CREATE INDEX idx_appointments_status ON appointments(status, starts_at);
 -- These are here for reference and will be handled by the app on startup
 
 -- ============================================================================
+-- ENVIRONMENTAL SENSOR READINGS
+-- ============================================================================
+
+CREATE TABLE IF NOT EXISTS environmental_readings (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id         INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    device_name     TEXT NOT NULL,              -- 'halo_test' or other sensor names
+    temperature     REAL,                       -- Temperature in °F
+    temperature_c   REAL,                       -- Temperature in °C (raw)
+    humidity        REAL,                       -- Relative humidity in %
+    light           REAL,                       -- Ambient light in Lux
+    imu_x           REAL,                       -- Accelerometer X in g
+    imu_y           REAL,                       -- Accelerometer Y in g
+    imu_z           REAL,                       -- Accelerometer Z in g
+    recorded_at     DATETIME NOT NULL,
+    created_at      DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_environmental_user_date ON environmental_readings(user_id, recorded_at DESC);
+CREATE INDEX idx_environmental_device ON environmental_readings(device_name, recorded_at DESC);
+
+-- ============================================================================
 -- BLE DEVICES
 -- ============================================================================
 

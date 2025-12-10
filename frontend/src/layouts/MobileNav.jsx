@@ -7,6 +7,7 @@ const MobileNav = ({ activeScreen, onNavigate }) => {
     { id: 'nutrition', icon: '🍎', label: 'Nutrition' },
     { id: 'fitness', icon: '🏃', label: 'Fitness' },
     { id: 'hydration', icon: '💧', label: 'Hydration' },
+    { id: 'environment', icon: '🌡️', label: 'Environ' },
     { id: 'video', icon: '📞', label: 'Video' }
   ]
 

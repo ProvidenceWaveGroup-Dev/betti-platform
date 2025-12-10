@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import vitalsApi from '../services/vitalsApi'
+import wsClient from '../services/websocket'
 import '../styles/mobileDashboard.scss'
 
 const MobileDashboard = ({ onNavigate }) => {
@@ -14,6 +15,14 @@ const MobileDashboard = ({ onNavigate }) => {
 
   const [nextAppointment, setNextAppointment] = useState(null)
   const [appointmentLoading, setAppointmentLoading] = useState(true)
+
+  // Environment sensor state
+  const [envData, setEnvData] = useState({
+    temperature: null,
+    humidity: null,
+    light: null,
+    connected: false
+  })
 
   // Fetch latest vitals from the API (same format as Vitals.jsx)
   useEffect(() => {
@@ -150,6 +159,32 @@ const MobileDashboard = ({ onNavigate }) => {
     return () => clearInterval(interval)
   }, [])
 
+  // Listen for Halo environment sensor updates
+  useEffect(() => {
+    const handleSensorUpdate = (data) => {
+      setEnvData({
+        temperature: data.temperature,
+        humidity: data.humidity,
+        light: data.light,
+        connected: true
+      })
+    }
+
+    const handleConnectionStatus = (data) => {
+      if (data.status !== 'connected') {
+        setEnvData(prev => ({ ...prev, connected: false }))
+      }
+    }
+
+    wsClient.on('halo-sensor-update', handleSensorUpdate)
+    wsClient.on('halo-connection-status', handleConnectionStatus)
+
+    return () => {
+      wsClient.off('halo-sensor-update', handleSensorUpdate)
+      wsClient.off('halo-connection-status', handleConnectionStatus)
+    }
+  }, [])
+
   // Quick actions that match mobile navigation
   const quickActions = [
     { id: 'health', icon: '❤️', label: 'Health Vitals', screen: 'health' },
@@ -243,6 +278,37 @@ const MobileDashboard = ({ onNavigate }) => {
               <div className="countdown" style={{ fontSize: '20px' }}>📅</div>
             </div>
           )}
+        </div>
+      </section>
+
+      {/* Environment Sensor Card */}
+      <section style={{ marginBottom: '24px' }}>
+        <div className="card-mobile interactive" onClick={() => onNavigate('environment')}>
+          <h3>Environment</h3>
+          <div className="info-grid">
+            <div className="info-item">
+              <div className="label">Temp</div>
+              <div className="value">
+                {envData.connected && envData.temperature != null ? `${envData.temperature}°F` : '--'}
+              </div>
+            </div>
+            <div className="info-item">
+              <div className="label">Humidity</div>
+              <div className="value">
+                {envData.connected && envData.humidity != null ? `${envData.humidity}%` : '--'}
+              </div>
+            </div>
+            <div className="info-item">
+              <div className="label">Light</div>
+              <div className="value">
+                {envData.connected && envData.light != null ? `${Math.round(envData.light)}` : '--'}
+              </div>
+            </div>
+          </div>
+          <div className={`status ${envData.connected ? '' : 'warning'}`}>
+            <div className={`dot ${envData.connected ? '' : 'warning'}`}></div>
+            <span>{envData.connected ? 'Sensor Connected' : 'Scanning...'}</span>
+          </div>
         </div>
       </section>
     </div>

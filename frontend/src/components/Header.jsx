@@ -42,6 +42,7 @@ function Header({ onNavigate, activeView = 'home' }) {
     { id: 'video', label: 'Video', icon: '📹' },
     { id: 'nutrition', label: 'Nutrition', icon: '🍎' },
     { id: 'hydration', label: 'Hydration', icon: '💧' },
+    { id: 'environment', label: 'Environment', icon: '🌡️' },
     { id: 'sensors', label: 'Setup', icon: '⚙️' },
   ]
 

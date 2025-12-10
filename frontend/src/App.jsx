@@ -8,6 +8,7 @@ import Hydration from './components/Hydration'
 import Medication from './components/Medication'
 import BLEDevices from './components/BLEDevices'
 import VideoChat from './components/VideoChat'
+import HaloSensor from './components/HaloSensor'
 import MobileLayout from './layouts/MobileLayout'
 import ErrorBoundary from './components/ErrorBoundary'
 import { detectDevice, forceMobileMode } from './utils/deviceDetection'
@@ -23,6 +24,7 @@ function App() {
     hydration: 'collapsed',
     medication: 'collapsed',
     appointments: 'collapsed',
+    environment: 'collapsed',
     sensors: 'hidden',
     video: 'hidden'
   })
@@ -55,7 +57,7 @@ function App() {
 
 
   // Static panel order for sidebar
-  const panelOrder = ['health', 'appointments', 'medication', 'nutrition', 'fitness', 'hydration', 'sensors']
+  const panelOrder = ['health', 'appointments', 'medication', 'nutrition', 'fitness', 'hydration', 'environment', 'sensors']
 
   const handleNavigate = (view) => {
     setActiveView(view)
@@ -71,6 +73,7 @@ function App() {
         hydration: 'collapsed',
         medication: 'collapsed',
         appointments: 'collapsed',
+        environment: 'collapsed',
         sensors: 'hidden',
         video: 'hidden'
       })
@@ -91,6 +94,7 @@ function App() {
           hydration: 'collapsed',
           medication: 'collapsed',
           appointments: 'collapsed',
+          environment: 'collapsed',
           sensors: 'hidden',
           video: 'visible'
         }
@@ -114,6 +118,7 @@ function App() {
         hydration: 'collapsed',
         medication: 'collapsed',
         appointments: 'collapsed',
+        environment: 'collapsed',
         sensors: 'hidden',
         video: 'hidden'
       }
@@ -149,6 +154,8 @@ function App() {
         return <Hydration isCollapsed={isCollapsed} />
       case 'medication':
         return <Medication isCollapsed={isCollapsed} />
+      case 'environment':
+        return <HaloSensor isCollapsed={isCollapsed} />
       case 'sensors':
         return <BLEDevices isCollapsed={isCollapsed} />
       case 'video':

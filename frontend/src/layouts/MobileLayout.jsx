@@ -11,6 +11,7 @@ import Nutrition from '../components/Nutrition'
 import Fitness from '../components/Fitness'
 import Hydration from '../components/Hydration'
 import VideoChat from '../components/VideoChat'
+import HaloSensor from '../components/HaloSensor'
 
 const MobileLayout = () => {
   const [activeScreen, setActiveScreen] = useState('dashboard')
@@ -37,6 +38,8 @@ const MobileLayout = () => {
         return <Hydration variant="mobile" onNavigate={handleNavigate} />
       case 'video':
         return <VideoChat variant="mobile" onNavigate={handleNavigate} />
+      case 'environment':
+        return <HaloSensor variant="mobile" onNavigate={handleNavigate} />
       default:
         return <MobileDashboard onNavigate={handleNavigate} />
     }

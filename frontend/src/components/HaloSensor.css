@@ -1,0 +1,486 @@
+/* Halo Environmental Sensor Widget */
+.halo-widget {
+  background: rgba(20, 20, 30, 0.6);
+  border-radius: 16px;
+  padding: 24px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 200, 255, 0.2);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.halo-widget.disconnected {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.halo-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(0, 200, 255, 0.15);
+}
+
+.halo-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text-light);
+  margin: 0;
+}
+
+.halo-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 300;
+}
+
+.halo-status.status-connected {
+  color: #00c8ff;
+  background: rgba(0, 200, 255, 0.1);
+}
+
+.halo-status.status-connected .status-dot {
+  background-color: #00c8ff;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.halo-status.status-connecting {
+  color: #ffd93d;
+  background: rgba(255, 217, 61, 0.1);
+}
+
+.halo-status.status-connecting .status-dot {
+  background-color: #ffd93d;
+  animation: blink 1s ease-in-out infinite;
+}
+
+.halo-status.status-disconnected {
+  color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.halo-status.status-disconnected .status-dot {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* Sensor Grid */
+.halo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  flex: 1;
+}
+
+.sensor-card {
+  background: rgba(10, 10, 20, 0.5);
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  gap: 16px;
+  border-left: 4px solid #00c8ff;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.sensor-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(0, 200, 255, 0.05) 0%, rgba(74, 158, 255, 0.05) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.sensor-card:hover::before {
+  opacity: 1;
+}
+
+.sensor-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 200, 255, 0.15);
+}
+
+/* Card color variations */
+.temperature-card {
+  border-left-color: #ff6b6b;
+}
+
+.temperature-card:hover {
+  box-shadow: 0 8px 20px rgba(255, 107, 107, 0.15);
+}
+
+.humidity-card {
+  border-left-color: #4fc3f7;
+}
+
+.humidity-card:hover {
+  box-shadow: 0 8px 20px rgba(79, 195, 247, 0.15);
+}
+
+.light-card {
+  border-left-color: #ffd93d;
+}
+
+.light-card:hover {
+  box-shadow: 0 8px 20px rgba(255, 217, 61, 0.15);
+}
+
+.imu-card {
+  border-left-color: #ab47bc;
+}
+
+.imu-card:hover {
+  box-shadow: 0 8px 20px rgba(171, 71, 188, 0.15);
+}
+
+.sensor-icon {
+  font-size: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+}
+
+.sensor-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sensor-label {
+  font-size: 14px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 500;
+}
+
+.sensor-value {
+  font-size: 36px;
+  font-weight: 300;
+  color: var(--text-light);
+  line-height: 1;
+  margin: 4px 0;
+}
+
+.sensor-unit {
+  font-size: 18px;
+  color: var(--text-muted);
+  margin-left: 6px;
+}
+
+.sensor-time {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 4px;
+}
+
+/* IMU Content wrapper */
+.imu-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* IMU Values */
+.imu-values {
+  display: flex;
+  gap: 16px;
+  margin: 8px 0;
+}
+
+/* IMU Chart */
+.imu-chart {
+  margin-top: 4px;
+}
+
+.imu-chart-canvas {
+  width: 100%;
+  max-width: 320px;
+  height: 120px;
+  border-radius: 6px;
+  background: rgba(10, 10, 20, 0.8);
+}
+
+/* IMU Record Controls */
+.imu-record-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.record-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  z-index: 10;
+}
+
+.record-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.record-btn:active {
+  transform: scale(0.95);
+}
+
+.record-btn.recording {
+  background: rgba(255, 59, 48, 0.4);
+  border-color: #ff3b30;
+  color: #ff3b30;
+}
+
+.record-btn.recording:hover {
+  background: rgba(255, 59, 48, 0.5);
+}
+
+.record-icon {
+  font-size: 14px;
+}
+
+.record-btn.recording .record-icon {
+  animation: pulse-record 1s ease-in-out infinite;
+}
+
+@keyframes pulse-record {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.recording-progress {
+  flex: 1;
+  max-width: 150px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.recording-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #ff3b30, #ff6b6b);
+  transition: width 0.1s linear;
+}
+
+.recording-time {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-light);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.imu-axis {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.imu-axis-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #ab47bc;
+  text-transform: uppercase;
+}
+
+.imu-axis-value {
+  font-size: 18px;
+  font-weight: 300;
+  color: var(--text-light);
+}
+
+/* Disconnected state */
+.halo-widget.disconnected .sensor-card {
+  border-left-color: rgba(255, 255, 255, 0.2);
+}
+
+.halo-widget.disconnected .sensor-value {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* Scanning message */
+.halo-scanning-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+}
+
+.scanning-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-top-color: rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Mini/Collapsed View */
+.halo-mini {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(0, 200, 255, 0.2);
+  border-radius: 12px;
+  padding: 12px 20px;
+  transition: all 0.3s ease;
+  max-height: 100px;
+}
+
+.halo-mini:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(0, 200, 255, 0.4);
+}
+
+.halo-mini.disconnected {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.halo-mini .mini-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.halo-mini .mini-icon {
+  font-size: 18px;
+}
+
+.halo-mini .mini-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-light);
+}
+
+.mini-status {
+  margin-left: auto;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.mini-status.status-connected {
+  color: #00c8ff;
+  background: rgba(0, 200, 255, 0.15);
+}
+
+.mini-status.status-connecting {
+  color: #ffd93d;
+  background: rgba(255, 217, 61, 0.15);
+}
+
+.mini-status.status-disconnected {
+  color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.mini-status .status-dot {
+  width: 6px;
+  height: 6px;
+}
+
+.mini-sensors-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.mini-sensor-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+
+.mini-sensor-icon {
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.mini-sensor-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.mini-sensor-value {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-light);
+  line-height: 1;
+}
+
+.mini-sensor-label {
+  font-size: 8px;
+  color: var(--text-muted);
+  text-transform: capitalize;
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.halo-mini.disconnected .mini-sensor-value {
+  color: rgba(255, 255, 255, 0.3);
+}
